@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.SuspendDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.vo.SuspendVo">
+    <id column="Suspend_Id" jdbcType="INTEGER" property="suspendId" />
+    <result column="Courserecorddetails_Id" jdbcType="INTEGER" property="courserecorddetailsId" />
+    <result column="Suspend_Time" jdbcType="TIMESTAMP" property="suspendTime" />
+    <result column="Suspend_Reason" jdbcType="VARCHAR" property="suspendReason" />
+    <result column="Suspend_Handler" jdbcType="VARCHAR" property="suspendHandler" />
+    <result column="Suspend_Approval" jdbcType="INTEGER" property="suspendApproval" />
+    <result column="Suspend_SAppName" jdbcType="VARCHAR" property="suspendSappname" />
+    <result column="Suspend_SAppTime" jdbcType="TIMESTAMP" property="suspendSapptime" />
+    <result column="Revoke_AppName" jdbcType="VARCHAR" property="revokeAppname" />
+    <result column="Revoke_TAppTime" jdbcType="TIMESTAMP" property="revokeTapptime" />
+    <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+    <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+    <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+    <result column="Student_Number" jdbcType="VARCHAR" property="studentNumber" />
+    <result column="Classes_Name" jdbcType="VARCHAR" property="classesName" />
+    <result column="Course_Name" jdbcType="VARCHAR" property="courseName" />
+    <result column="Course_id" jdbcType="INTEGER" property="courseId" />
+    <result column="Classes_Id" jdbcType="INTEGER" property="classesId" />
+
+    <association javaType="com.trkj.tsm.vo.CourserecorddetailsVo" property="courserecorddetailsVo">
+      <id column="CourseRecorddetails_Id" jdbcType="INTEGER" property="courserecorddetailsId" />
+      <result column="CourseRecord_Id" jdbcType="INTEGER" property="courserecordId" />
+      <result column="Course_Id" jdbcType="INTEGER" property="courseId" />
+      <result column="Classes_Id" jdbcType="INTEGER" property="classesId"/>
+      <result column="Learningstate" jdbcType="INTEGER" property="learningstate"/>
+      <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    </association>
+  </resultMap>
+
+  <sql id="Base_Column_List_CourseRecorddetails">
+    crr.CourseRecorddetails_Id, crr.CourseRecord_Id, crr.Course_Id,crr.Classes_Id,crr.Learningstate,crr.remarks
+  </sql>
+
+  <sql id="Base_Column_List_Suspend">
+    su.Suspend_Id, su.Courserecorddetails_Id, su.Suspend_Time, su.Suspend_Reason, su.Suspend_Handler,
+    su.Suspend_Approval, su.Suspend_SAppName, su.Suspend_SAppTime, su.Revoke_AppName, su.Revoke_TAppTime,
+    su.UpdateName, su.UpdateTime, su.DeleteName, su.DeleteTime, su.TimeLiness
+  </sql>
+
+  <select id="selectAllSuspend" resultMap="BaseResultMap">
+    SELECT
+	su.Suspend_Id,
+	su.Courserecorddetails_Id,
+	su.Suspend_Time,
+	su.Suspend_Reason,
+	su.Suspend_Handler,
+    su.Suspend_Approval,
+    su.Suspend_SAppName,
+    su.Suspend_SAppTime,
+    su.Revoke_AppName,
+    su.Revoke_TAppTime,
+    su.UpdateName,
+    su.UpdateTime,
+    su.DeleteName,
+    su.DeleteTime,
+    su.TimeLiness,
+	crr.CourseRecorddetails_Id,
+	crr.CourseRecord_Id,
+	crr.Course_Id,
+	crr.Classes_Id,
+	crr.Learningstate,
+	crr.remarks,
+	c.Classes_Name as Classes_Name,
+	c.Classes_Id  as Classes_Id,
+	cad.CourseRecord_Id,
+	cad.Student_Id,
+	s.Student_Id,
+	s.Student_Number as Student_Number,
+	co.Course_id as Course_id,
+	co.Course_Name as Course_Name
+
+FROM
+	suspend su
+	left JOIN courserecorddetails crr ON su.Courserecorddetails_Id = crr.Courserecorddetails_Id
+	left join classes c on crr.Classes_Id=c.Classes_Id
+	left join course co on co.Course_id=crr.Course_Id
+	left join courserecord cad on cad.CourseRecord_Id=crr.CourseRecord_Id
+	left join student s on s.Student_Id=cad.Student_Id
+
+WHERE
+	su.TimeLiness = 0
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List_Suspend" />
+    from suspend
+    where Suspend_Id = #{suspendId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from suspend
+    where Suspend_Id = #{suspendId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="Suspend_Id" keyProperty="suspendId" parameterType="com.trkj.tsm.vo.SuspendVo" useGeneratedKeys="true">
+    insert into suspend (Courserecorddetails_Id, Suspend_Time, 
+      Suspend_Reason, Suspend_Handler, Suspend_Approval, 
+      Suspend_SAppName, Suspend_SAppTime, Revoke_AppName, 
+      Revoke_TAppTime, UpdateName, UpdateTime, 
+      DeleteName, DeleteTime, TimeLiness
+      )
+    values (#{courserecorddetailsId,jdbcType=INTEGER}, #{suspendTime,jdbcType=TIMESTAMP}, 
+      #{suspendReason,jdbcType=VARCHAR}, #{suspendHandler,jdbcType=VARCHAR}, #{suspendApproval,jdbcType=INTEGER}, 
+      #{suspendSappname,jdbcType=VARCHAR}, #{suspendSapptime,jdbcType=TIMESTAMP}, #{revokeAppname,jdbcType=VARCHAR}, 
+      #{revokeTapptime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{deletename,jdbcType=VARCHAR}, #{deletetime,jdbcType=TIMESTAMP}, #{timeliness,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="Suspend_Id" keyProperty="suspendId" parameterType="com.trkj.tsm.vo.SuspendVo" useGeneratedKeys="true">
+    insert into suspend
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="courserecorddetailsId != null">
+        Courserecorddetails_Id,
+      </if>
+      <if test="suspendTime != null">
+        Suspend_Time,
+      </if>
+      <if test="suspendReason != null">
+        Suspend_Reason,
+      </if>
+      <if test="suspendHandler != null">
+        Suspend_Handler,
+      </if>
+      <if test="suspendApproval != null">
+        Suspend_Approval,
+      </if>
+      <if test="suspendSappname != null">
+        Suspend_SAppName,
+      </if>
+      <if test="suspendSapptime != null">
+        Suspend_SAppTime,
+      </if>
+      <if test="revokeAppname != null">
+        Revoke_AppName,
+      </if>
+      <if test="revokeTapptime != null">
+        Revoke_TAppTime,
+      </if>
+      <if test="updatename != null">
+        UpdateName,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+      <if test="deletename != null">
+        DeleteName,
+      </if>
+      <if test="deletetime != null">
+        DeleteTime,
+      </if>
+      <if test="timeliness != null">
+        TimeLiness,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="courserecorddetailsId != null">
+        #{courserecorddetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="suspendTime != null">
+        #{suspendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="suspendReason != null">
+        #{suspendReason,jdbcType=VARCHAR},
+      </if>
+      <if test="suspendHandler != null">
+        #{suspendHandler,jdbcType=VARCHAR},
+      </if>
+      <if test="suspendApproval != null">
+        #{suspendApproval,jdbcType=INTEGER},
+      </if>
+      <if test="suspendSappname != null">
+        #{suspendSappname,jdbcType=VARCHAR},
+      </if>
+      <if test="suspendSapptime != null">
+        #{suspendSapptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="revokeAppname != null">
+        #{revokeAppname,jdbcType=VARCHAR},
+      </if>
+      <if test="revokeTapptime != null">
+        #{revokeTapptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        #{timeliness,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.vo.SuspendVo">
+    update suspend
+    <set>
+      <if test="courserecorddetailsId != null">
+        Courserecorddetails_Id = #{courserecorddetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="suspendTime != null">
+        Suspend_Time = #{suspendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="suspendReason != null">
+        Suspend_Reason = #{suspendReason,jdbcType=VARCHAR},
+      </if>
+      <if test="suspendHandler != null">
+        Suspend_Handler = #{suspendHandler,jdbcType=VARCHAR},
+      </if>
+      <if test="suspendApproval != null">
+        Suspend_Approval = #{suspendApproval,jdbcType=INTEGER},
+      </if>
+      <if test="suspendSappname != null">
+        Suspend_SAppName = #{suspendSappname,jdbcType=VARCHAR},
+      </if>
+      <if test="suspendSapptime != null">
+        Suspend_SAppTime = #{suspendSapptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="revokeAppname != null">
+        Revoke_AppName = #{revokeAppname,jdbcType=VARCHAR},
+      </if>
+      <if test="revokeTapptime != null">
+        Revoke_TAppTime = #{revokeTapptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        UpdateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        DeleteName = #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        TimeLiness = #{timeliness,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Suspend_Id = #{suspendId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.vo.SuspendVo">
+    update suspend
+    set Courserecorddetails_Id = #{courserecorddetailsId,jdbcType=INTEGER},
+      Suspend_Time = #{suspendTime,jdbcType=TIMESTAMP},
+      Suspend_Reason = #{suspendReason,jdbcType=VARCHAR},
+      Suspend_Handler = #{suspendHandler,jdbcType=VARCHAR},
+      Suspend_Approval = #{suspendApproval,jdbcType=INTEGER},
+      Suspend_SAppName = #{suspendSappname,jdbcType=VARCHAR},
+      Suspend_SAppTime = #{suspendSapptime,jdbcType=TIMESTAMP},
+      Revoke_AppName = #{revokeAppname,jdbcType=VARCHAR},
+      Revoke_TAppTime = #{revokeTapptime,jdbcType=TIMESTAMP},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER}
+    where Suspend_Id = #{suspendId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.AnnouncementselectDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.entity.Announcementselect">
+    <id column="AnnouncementSelect_Id" jdbcType="INTEGER" property="announcementselectId" />
+    <result column="Announcement_Id" jdbcType="INTEGER" property="announcementId" />
+    <result column="Emp_Id" jdbcType="INTEGER" property="empId" />
+    <result column="ReadState" jdbcType="INTEGER" property="readstate" />
+    <result column="ReadTime" jdbcType="TIMESTAMP" property="readtime" />
+    <association property="an" javaType="com.trkj.tsm.entity.Announcement">
+      <id column="Announcement_Id" jdbcType="INTEGER" property="announcementId" />
+      <result column="AnnouncementType_Id" jdbcType="INTEGER" property="announcementtypeId" />
+      <result column="Start_Time" jdbcType="TIMESTAMP" property="startTime" />
+      <result column="End_Time" jdbcType="TIMESTAMP" property="endTime" />
+      <result column="Announcement_Theme" jdbcType="VARCHAR" property="announcementTheme" />
+      <result column="Announcement_Content" jdbcType="VARCHAR" property="announcementContent" />
+      <result column="Announcement_State" jdbcType="INTEGER" property="announcementState" />
+      <result column="Addname" jdbcType="VARCHAR" property="addname" />
+      <result column="AddTime" jdbcType="TIMESTAMP" property="addtime" />
+      <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+      <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+      <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+      <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+      <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+      <result column="PublishName" jdbcType="VARCHAR" property="publishname" />
+      <result column="PublishTime" jdbcType="TIMESTAMP" property="publishtime" />
+      <result column="SuspenName" jdbcType="VARCHAR" property="suspenname" />
+      <result column="SuspenTime" jdbcType="TIMESTAMP" property="suspentime" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    AnnouncementSelect_Id, Announcement_Id, Emp_Id, ReadState, ReadTime
+  </sql>
+  <sql id="Base_Column_an">
+    an.Announcement_Id, an.AnnouncementType_Id, an.Start_Time, an.End_Time, an.Announcement_Theme, an.Announcement_Content,
+    an.Announcement_State, an.Addname, an.AddTime, an.UpdateName, an.UpdateTime, an.DeleteName, an.DeleteTime,
+    an.TimeLiness, an.PublishName, an.PublishTime, an.SuspenName, an.SuspenTime
+  </sql>
+  <sql id="Base_Column_ans">
+    ans.AnnouncementSelect_Id, ans.Announcement_Id, ans.Emp_Id, ans.ReadState, ans.ReadTime
+  </sql>
+  <select id="selectAnsByEmpId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_an" />,
+    <include refid="Base_Column_ans" />
+    from announcementselect ans
+    inner join announcement an on ans.Announcement_Id = an.Announcement_Id
+    where ans.Emp_Id = #{empId,jdbcType=INTEGER}
+    and an.TimeLiness = 0
+    and an.Announcement_State = 1
+  </select>
+  <update id="updateAnsById" parameterType="com.trkj.tsm.entity.Announcementselect">
+    update announcementselect
+    set ReadState = #{readstate,jdbcType=INTEGER},
+      ReadTime = #{readtime,jdbcType=TIMESTAMP}
+    where AnnouncementSelect_Id = #{announcementselectId,jdbcType=INTEGER}
+  </update>
+  <insert id="insertAnSelect" keyColumn="AnnouncementSelect_Id" keyProperty="announcementselectId" parameterType="com.trkj.tsm.entity.Announcementselect" useGeneratedKeys="true">
+    insert into announcementselect (Announcement_Id, Emp_Id)
+    values (#{announcementId,jdbcType=INTEGER}, #{empId,jdbcType=INTEGER})
+  </insert>
+  <select id="selectEmpIdByAnId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from announcementselect
+    where Announcement_Id = #{announcementId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from announcementselect
+    where AnnouncementSelect_Id = #{announcementselectId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from announcementselect
+    where AnnouncementSelect_Id = #{announcementselectId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="AnnouncementSelect_Id" keyProperty="announcementselectId" parameterType="com.trkj.tsm.entity.Announcementselect" useGeneratedKeys="true">
+    insert into announcementselect (Announcement_Id, Emp_Id, ReadState, 
+      ReadTime)
+    values (#{announcementId,jdbcType=INTEGER}, #{empId,jdbcType=INTEGER}, #{readstate,jdbcType=INTEGER}, 
+      #{readtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="AnnouncementSelect_Id" keyProperty="announcementselectId" parameterType="com.trkj.tsm.entity.Announcementselect" useGeneratedKeys="true">
+    insert into announcementselect
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="announcementId != null">
+        Announcement_Id,
+      </if>
+      <if test="empId != null">
+        Emp_Id,
+      </if>
+      <if test="readstate != null">
+        ReadState,
+      </if>
+      <if test="readtime != null">
+        ReadTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="announcementId != null">
+        #{announcementId,jdbcType=INTEGER},
+      </if>
+      <if test="empId != null">
+        #{empId,jdbcType=INTEGER},
+      </if>
+      <if test="readstate != null">
+        #{readstate,jdbcType=INTEGER},
+      </if>
+      <if test="readtime != null">
+        #{readtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.entity.Announcementselect">
+    update announcementselect
+    <set>
+      <if test="announcementId != null">
+        Announcement_Id = #{announcementId,jdbcType=INTEGER},
+      </if>
+      <if test="empId != null">
+        Emp_Id = #{empId,jdbcType=INTEGER},
+      </if>
+      <if test="readstate != null">
+        ReadState = #{readstate,jdbcType=INTEGER},
+      </if>
+      <if test="readtime != null">
+        ReadTime = #{readtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where AnnouncementSelect_Id = #{announcementselectId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.entity.Announcementselect">
+    update announcementselect
+    set Announcement_Id = #{announcementId,jdbcType=INTEGER},
+      Emp_Id = #{empId,jdbcType=INTEGER},
+      ReadState = #{readstate,jdbcType=INTEGER},
+      ReadTime = #{readtime,jdbcType=TIMESTAMP}
+    where AnnouncementSelect_Id = #{announcementselectId,jdbcType=INTEGER}
+  </update>
+</mapper>

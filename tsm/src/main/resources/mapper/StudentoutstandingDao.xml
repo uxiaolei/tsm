@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.StudentoutstandingDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.entity.Studentoutstanding">
+    <id column="outstanding_Id" jdbcType="INTEGER" property="outstandingId" />
+    <result column="Fees_Id" jdbcType="INTEGER" property="feesId" />
+    <result column="outstanding_Name" jdbcType="VARCHAR" property="outstandingName" />
+    <result column="outstanding_Date" jdbcType="TIMESTAMP" property="outstandingDate" />
+    <result column="AlongMoney" jdbcType="DECIMAL" property="alongmoney" />
+    <result column="Accumulateds" jdbcType="DECIMAL" property="accumulateds" />
+    <result column="AddName" jdbcType="VARCHAR" property="addname" />
+    <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="ApprovalName" jdbcType="VARCHAR" property="approvalname" />
+    <result column="ApprovalTime" jdbcType="TIMESTAMP" property="approvaltime" />
+    <result column="RevokeAppName" jdbcType="VARCHAR" property="revokeappname" />
+    <result column="RevokeAppTime" jdbcType="TIMESTAMP" property="revokeapptime" />
+    <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+    <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+    <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+    <result column="Approval_Type" jdbcType="INTEGER" property="approvalType" />
+
+    <association property="entryfees" javaType="com.trkj.tsm.entity.Entryfees">
+      <id column="Fees_Id" jdbcType="INTEGER" property="feesId" />
+      <result column="Register_Id" jdbcType="INTEGER" property="registerId" />
+      <result column="Course_Id" jdbcType="INTEGER" property="courseId" />
+      <result column="Fees_Receivable" jdbcType="DECIMAL" property="feesReceivable" />
+      <result column="Fees_Name" jdbcType="VARCHAR" property="feesName" />
+      <result column="Fees_Type" jdbcType="INTEGER" property="feesType" />
+      <result column="Fees_Advance" jdbcType="DECIMAL" property="feesAdvance" />
+      <result column="Receipts" jdbcType="DECIMAL" property="receipts" />
+      <result column="AddName" jdbcType="VARCHAR" property="addname" />
+      <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+      <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+      <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+      <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+      <result column="Fees_State" jdbcType="INTEGER" property="feesState" />
+      <result column="ApprovalName" jdbcType="VARCHAR" property="approvalname" />
+      <result column="ApprovalTime" jdbcType="TIMESTAMP" property="approvaltime" />
+      <result column="RevokeAppName" jdbcType="VARCHAR" property="revokeappname" />
+      <result column="RevokeAppTime" jdbcType="TIMESTAMP" property="revokeapptime" />
+      <!--获取表中表-->
+      <association property="register" javaType="com.trkj.tsm.entity.Register">
+        <id column="Register_Id" jdbcType="INTEGER" property="registerId" />
+        <result column="Source_Id" jdbcType="INTEGER" property="sourceId" />
+        <result column="Course_Id" jdbcType="INTEGER" property="courseId" />
+        <result column="DetailCourse_Id" jdbcType="INTEGER" property="detailcourseId" />
+        <result column="Emp_Id" jdbcType="INTEGER" property="empId" />
+        <result column="Phone" jdbcType="VARCHAR" property="phone" />
+        <result column="ConsultAnt" jdbcType="VARCHAR" property="consultant" />
+        <result column="Sex" jdbcType="VARCHAR" property="sex" />
+        <result column="ConsultContent" jdbcType="VARCHAR" property="consultcontent" />
+        <result column="AttentState" jdbcType="INTEGER" property="attentstate" />
+        <result column="AddName" jdbcType="VARCHAR" property="addname" />
+        <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+        <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+        <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+        <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+        <result column="LastUpdateName" jdbcType="VARCHAR" property="lastupdatename" />
+        <result column="LastUpdateTime" jdbcType="TIMESTAMP" property="lastupdatetime" />
+        <result column="PayState" jdbcType="INTEGER" property="paystate" />
+      </association>
+    </association>
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    outstanding_Id, Fees_Id, outstanding_Name, outstanding_Date, AlongMoney, Accumulateds,
+    AddName, ADDTIME, UpdateName, UpdateTime, ApprovalName, ApprovalTime, RevokeAppName, 
+    RevokeAppTime, DeleteName, DeleteTime, TimeLiness, Approval_Type
+  </sql>
+  <sql id="Base_Column_List2">
+    sds.outstanding_Id, sds.Fees_Id, sds.outstanding_Name, sds.outstanding_Date, sds.AlongMoney, sds.Accumulateds,
+    sds.AddName, sds.ADDTIME, sds.UpdateName, sds.UpdateTime, sds.ApprovalName, sds.ApprovalTime, sds.RevokeAppName,
+    sds.RevokeAppTime, sds.DeleteName, sds.DeleteTime, sds.TimeLiness, sds.Approval_Type
+  </sql>
+  <sql id="Base_Column_Entryfees">
+    en.Fees_Id, en.Register_Id, en.Course_Id, en.Fees_Receivable, en.Fees_Name, en.Fees_Type, en.Fees_Advance,
+    en.Receipts, en.AddName, en.ADDTIME, en.UpdateName, en.UpdateTime, en.TimeLiness, en.Fees_State, en.ApprovalName,
+    en.ApprovalTime, en.RevokeAppName, en.RevokeAppTime
+  </sql>
+  <sql id="Base_Column_Register">
+    r.Register_Id, r.Source_Id, r.Course_Id, r.DetailCourse_Id, r.Emp_Id,  r.Phone, r.ConsultAnt, r.Sex,
+    r.ConsultContent, r.AttentState, r.AddName, r.ADDTIME, r.TimeLiness, r.DeleteName, r.DeleteTime,
+    r.LastUpdateName, r.LastUpdateTime, r.PayState
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from studentoutstanding
+    where outstanding_Id = #{outstandingId,jdbcType=INTEGER}
+  </select>
+  <!--显示-->
+  <select id="seleAllstudentout" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />,
+    <include refid="Base_Column_Register" />,
+    <include refid="Base_Column_Entryfees" />
+    from studentoutstanding sds
+    inner join entryfees en on sds.Fees_Id=en.Fees_Id
+    inner join register r on en.Register_Id=r.Register_Id
+    where sds.TimeLiness=0
+  </select>
+  <!--查询未审核-->
+  <select id="seleWapprovaltype" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />,
+    <include refid="Base_Column_Register" />,
+    <include refid="Base_Column_Entryfees" />
+    from studentoutstanding sds
+    inner join entryfees en on sds.Fees_Id=en.Fees_Id
+    inner join register r on en.Register_Id=r.Register_Id
+    where sds.Approval_Type=0
+  </select>
+  <!--查询已审核-->
+  <select id="seleYapprovaltype" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />,
+    <include refid="Base_Column_Register" />,
+    <include refid="Base_Column_Entryfees" />
+    from studentoutstanding sds
+    inner join entryfees en on sds.Fees_Id=en.Fees_Id
+    inner join register r on en.Register_Id=r.Register_Id
+    where sds.Approval_Type=1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from studentoutstanding
+    where outstanding_Id = #{outstandingId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="outstanding_Id" keyProperty="outstandingId" parameterType="com.trkj.tsm.entity.Studentoutstanding" useGeneratedKeys="true">
+    insert into studentoutstanding (Fees_Id, outstanding_Name, outstanding_Date, 
+      AlongMoney, Accumulateds, AddName,
+      ADDTIME, UpdateName, UpdateTime, 
+      ApprovalName, ApprovalTime, RevokeAppName, 
+      RevokeAppTime, DeleteName, DeleteTime, 
+      TimeLiness,Approval_Type)
+    values (#{feesId,jdbcType=INTEGER}, #{outstandingName,jdbcType=VARCHAR}, #{outstandingDate,jdbcType=TIMESTAMP}, 
+      #{alongmoney,jdbcType=DECIMAL}, #{accumulateds,jdbcType=DECIMAL}, #{addname,jdbcType=VARCHAR},
+      #{addtime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{approvalname,jdbcType=VARCHAR}, #{approvaltime,jdbcType=TIMESTAMP}, #{revokeappname,jdbcType=VARCHAR}, 
+      #{revokeapptime,jdbcType=TIMESTAMP}, #{deletename,jdbcType=VARCHAR}, #{deletetime,jdbcType=TIMESTAMP}, 
+      #{timeliness,jdbcType=INTEGER}, #{approvalType,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="outstanding_Id" keyProperty="outstandingId" parameterType="com.trkj.tsm.entity.Studentoutstanding" useGeneratedKeys="true">
+    insert into studentoutstanding
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="feesId != null">
+        Fees_Id,
+      </if>
+      <if test="outstandingName != null">
+        outstanding_Name,
+      </if>
+      <if test="outstandingDate != null">
+        outstanding_Date,
+      </if>
+      <if test="alongmoney != null">
+        AlongMoney,
+      </if>
+      <if test="accumulateds != null">
+        Accumulateds,
+      </if>
+      <if test="addname != null">
+        AddName,
+      </if>
+      <if test="addtime != null">
+        ADDTIME,
+      </if>
+      <if test="updatename != null">
+        UpdateName,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+      <if test="approvalname != null">
+        ApprovalName,
+      </if>
+      <if test="approvaltime != null">
+        ApprovalTime,
+      </if>
+      <if test="revokeappname != null">
+        RevokeAppName,
+      </if>
+      <if test="revokeapptime != null">
+        RevokeAppTime,
+      </if>
+      <if test="deletename != null">
+        DeleteName,
+      </if>
+      <if test="deletetime != null">
+        DeleteTime,
+      </if>
+      <if test="timeliness != null">
+        TimeLiness,
+      </if>
+      <if test="approvalType != null">
+        Approval_Type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="feesId != null">
+        #{feesId,jdbcType=INTEGER},
+      </if>
+      <if test="outstandingName != null">
+        #{outstandingName,jdbcType=VARCHAR},
+      </if>
+      <if test="outstandingDate != null">
+        #{outstandingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alongmoney != null">
+        #{alongmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="accumulateds != null">
+        #{accumulateds,jdbcType=DECIMAL},
+      </if>
+      <if test="addname != null">
+        #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approvalname != null">
+        #{approvalname,jdbcType=VARCHAR},
+      </if>
+      <if test="approvaltime != null">
+        #{approvaltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="revokeappname != null">
+        #{revokeappname,jdbcType=VARCHAR},
+      </if>
+      <if test="revokeapptime != null">
+        #{revokeapptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        #{timeliness,jdbcType=INTEGER},
+      </if>
+      <if test="approvalType != null">
+        #{approvalType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.entity.Studentoutstanding">
+    update studentoutstanding
+    <set>
+      <if test="feesId != null">
+        Fees_Id = #{feesId,jdbcType=INTEGER},
+      </if>
+      <if test="outstandingName != null">
+        outstanding_Name = #{outstandingName,jdbcType=VARCHAR},
+      </if>
+      <if test="outstandingDate != null">
+        outstanding_Date = #{outstandingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alongmoney != null">
+        AlongMoney = #{alongmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="accumulateds != null">
+        Accumulateds = #{accumulateds,jdbcType=DECIMAL},
+      </if>
+      <if test="addname != null">
+        AddName = #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        ADDTIME = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        UpdateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approvalname != null">
+        ApprovalName = #{approvalname,jdbcType=VARCHAR},
+      </if>
+      <if test="approvaltime != null">
+        ApprovalTime = #{approvaltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="revokeappname != null">
+        RevokeAppName = #{revokeappname,jdbcType=VARCHAR},
+      </if>
+      <if test="revokeapptime != null">
+        RevokeAppTime = #{revokeapptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        DeleteName = #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        TimeLiness = #{timeliness,jdbcType=INTEGER},
+      </if>
+      <if test="approvalType != null">
+        Approval_Type = #{approvalType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where outstanding_Id = #{outstandingId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.entity.Studentoutstanding">
+    update studentoutstanding
+    set Fees_Id = #{feesId,jdbcType=INTEGER},
+      outstanding_Name = #{outstandingName,jdbcType=VARCHAR},
+      outstanding_Date = #{outstandingDate,jdbcType=TIMESTAMP},
+      AlongMoney = #{alongmoney,jdbcType=DECIMAL},
+      Accumulateds = #{accumulateds,jdbcType=DECIMAL},
+      AddName = #{addname,jdbcType=VARCHAR},
+      ADDTIME = #{addtime,jdbcType=TIMESTAMP},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      ApprovalName = #{approvalname,jdbcType=VARCHAR},
+      ApprovalTime = #{approvaltime,jdbcType=TIMESTAMP},
+      RevokeAppName = #{revokeappname,jdbcType=VARCHAR},
+      RevokeAppTime = #{revokeapptime,jdbcType=TIMESTAMP},
+      DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER},
+      Approval_Type = #{approvalType,jdbcType=INTEGER}
+    where outstanding_Id = #{outstandingId,jdbcType=INTEGER}
+  </update>
+  <update id="upapprovaltype" parameterType="com.trkj.tsm.entity.Studentoutstanding">
+    update studentoutstanding
+    set Approval_Type = #{approvalType,jdbcType=INTEGER},
+     ApprovalName = #{approvalname,jdbcType=VARCHAR},
+      ApprovalTime = #{approvaltime,jdbcType=TIMESTAMP}
+    where outstanding_Id = #{outstandingId,jdbcType=INTEGER}
+  </update>
+</mapper>

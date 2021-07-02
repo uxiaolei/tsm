@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.SystemDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.entity.System">
+    <id column="System_Id" jdbcType="INTEGER" property="systemId" />
+    <result column="SystemType_Id" jdbcType="INTEGER" property="systemtypeId" />
+    <result column="System_Theme" jdbcType="VARCHAR" property="systemTheme" />
+    <result column="Dept_Id" jdbcType="INTEGER" property="deptId" />
+    <result column="System_Content" jdbcType="VARCHAR" property="systemContent" />
+    <result column="System_State" jdbcType="INTEGER" property="systemState" />
+    <result column="AddName" jdbcType="VARCHAR" property="addname" />
+    <result column="AddTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+    <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+    <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+    <result column="PublishName" jdbcType="VARCHAR" property="publishname" />
+    <result column="PublishTime" jdbcType="TIMESTAMP" property="publishtime" />
+    <result column="SuspendName" jdbcType="VARCHAR" property="suspendname" />
+    <result column="SuspendTime" jdbcType="TIMESTAMP" property="suspendtime" />
+    <association property="systemtype" javaType="com.trkj.tsm.entity.Systemtype">
+      <id column="SystemType_Id" jdbcType="INTEGER" property="systemtypeId" />
+      <result column="SystemType_Name" jdbcType="VARCHAR" property="systemtypeName" />
+      <result column="AddName" jdbcType="VARCHAR" property="addname" />
+      <result column="AddTime" jdbcType="TIMESTAMP" property="addtime" />
+      <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+      <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+      <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+      <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+      <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+    </association>
+    <association property="dept" javaType="com.trkj.tsm.entity.Dept">
+      <id column="Dept_Id" jdbcType="INTEGER" property="deptId"/>
+      <result column="Dept_Name" jdbcType="VARCHAR" property="deptName"/>
+      <result column="Dept_SortNumber" jdbcType="VARCHAR" property="deptSortnumber"/>
+      <result column="Superiors_Dept_Id" jdbcType="INTEGER" property="superiorsDeptId"/>
+      <result column="AddName" jdbcType="VARCHAR" property="addname"/>
+      <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime"/>
+      <result column="UpdateName" jdbcType="VARCHAR" property="updatename"/>
+      <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime"/>
+      <result column="DeleteName" jdbcType="VARCHAR" property="deletename"/>
+      <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime"/>
+      <result column="TimeLiness" jdbcType="INTEGER" property="timeliness"/>
+    </association>
+  </resultMap>
+  <sql id="Base_Column_system">
+    s.System_Id, s.SystemType_Id, s.System_Theme, s.Dept_Id, s.System_Content, s.System_State, s.AddName,
+    s.AddTime, s.UpdateName, s.UpdateTime, s.DeleteName, s.DeleteTime, s.TimeLiness, s.PublishName,
+    s.PublishTime, s.SuspendName, s.SuspendTime
+  </sql>
+  <sql id="Base_Column_dept">
+    d.Dept_Id, d.Dept_Name, d.Dept_SortNumber, d.Superiors_Dept_Id, d.AddName, d.ADDTIME, d.UpdateName,
+    d.UpdateTime, d.DeleteName, d.DeleteTime, d.TimeLiness
+  </sql>
+  <sql id="Base_Column_systemtype">
+    st.SystemType_Id, st.SystemType_Name, st.AddName, st.AddTime, st.UpdateName, st.UpdateTime, st.DeleteName,
+    st.DeleteTime, st.TimeLiness
+  </sql>
+  <select id="selectSystemByType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_system" />,
+    <include refid="Base_Column_dept" />,
+    <include refid="Base_Column_systemtype" />
+    from `system` s
+    inner join dept d on s.Dept_Id = d.Dept_Id
+    inner join systemtype st on s.SystemType_Id = st.SystemType_Id
+    where s.TimeLiness = 0
+    and st.SystemType_Name like CONCAT('%',#{systemTypeName,jdbcType=VARCHAR},'%')
+  </select>
+  <select id="selectSystemByTheme" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_system" />,
+    <include refid="Base_Column_dept" />,
+    <include refid="Base_Column_systemtype" />
+    from `system` s
+    inner join dept d on s.Dept_Id = d.Dept_Id
+    inner join systemtype st on s.SystemType_Id = st.SystemType_Id
+    where s.TimeLiness = 0
+    and s.System_Theme like CONCAT('%',#{systemTheme,jdbcType=VARCHAR},'%')
+  </select>
+  <select id="selectSystemByDept" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_system" />,
+    <include refid="Base_Column_dept" />,
+    <include refid="Base_Column_systemtype" />
+    from `system` s
+    inner join dept d on s.Dept_Id = d.Dept_Id
+    inner join systemtype st on s.SystemType_Id = st.SystemType_Id
+    where s.TimeLiness = 0
+    and d.Dept_Name like CONCAT('%',#{deptName,jdbcType=VARCHAR},'%')
+  </select>
+  <select id="selectSystemByStateNO" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_system" />,
+    <include refid="Base_Column_dept" />,
+    <include refid="Base_Column_systemtype" />
+    from `system` s
+    inner join dept d on s.Dept_Id = d.Dept_Id
+    inner join systemtype st on s.SystemType_Id = st.SystemType_Id
+    where s.TimeLiness = 0
+    and s.System_State = 0
+    or s.System_State = 2
+    and s.TimeLiness = 0
+  </select>
+  <select id="selectSystemByStateYES" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_system" />,
+    <include refid="Base_Column_dept" />,
+    <include refid="Base_Column_systemtype" />
+    from `system` s
+    inner join dept d on s.Dept_Id = d.Dept_Id
+    inner join systemtype st on s.SystemType_Id = st.SystemType_Id
+    where s.TimeLiness = 0
+    and s.System_State = 1
+  </select>
+  <select id="selectAllSystem" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_system" />,
+    <include refid="Base_Column_dept" />,
+    <include refid="Base_Column_systemtype" />
+    from `system` s
+    inner join dept d on s.Dept_Id = d.Dept_Id
+    inner join systemtype st on s.SystemType_Id = st.SystemType_Id
+    where s.TimeLiness = 0
+  </select>
+  <insert id="insertSystem" keyColumn="System_Id" keyProperty="systemId" parameterType="com.trkj.tsm.entity.System" useGeneratedKeys="true">
+    insert into `system` (SystemType_Id, System_Theme, Dept_Id,
+      System_Content, AddName, AddTime)
+    values (#{systemtypeId,jdbcType=INTEGER}, #{systemTheme,jdbcType=VARCHAR}, #{deptId,jdbcType=INTEGER},
+      #{systemContent,jdbcType=VARCHAR}, #{addname,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateSystemStateGo" parameterType="com.trkj.tsm.entity.System">
+    update `system`
+    set System_State = #{systemState,jdbcType=INTEGER},
+      PublishName = #{publishname,jdbcType=VARCHAR},
+      PublishTime = #{publishtime,jdbcType=TIMESTAMP}
+    where System_Id = #{systemId,jdbcType=INTEGER}
+  </update>
+  <update id="updateSystemStateStop" parameterType="com.trkj.tsm.entity.System">
+    update `system`
+    set System_State = #{systemState,jdbcType=INTEGER},
+      SuspendName = #{suspendname,jdbcType=VARCHAR},
+      SuspendTime = #{suspendtime,jdbcType=TIMESTAMP}
+    where System_Id = #{systemId,jdbcType=INTEGER}
+  </update>
+  <update id="updateSystem" parameterType="com.trkj.tsm.entity.System">
+    update `system`
+    set
+      System_Theme = #{systemTheme,jdbcType=VARCHAR},
+      Dept_Id = #{deptId,jdbcType=INTEGER},
+      System_Content = #{systemContent,jdbcType=VARCHAR},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where System_Id = #{systemId,jdbcType=INTEGER}
+  </update>
+  <update id="deleteSystem" parameterType="com.trkj.tsm.entity.System">
+    update `system`
+    set
+      DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER}
+    where System_Id = #{systemId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_system" />
+    from system
+    where System_Id = #{systemId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from system
+    where System_Id = #{systemId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="System_Id" keyProperty="systemId" parameterType="com.trkj.tsm.entity.System" useGeneratedKeys="true">
+    insert into system (SystemType_Id, System_Theme, Dept_Id, 
+      System_Content, System_State, AddName, 
+      AddTime, UpdateName, UpdateTime,
+      DeleteName, DeleteTime, TimeLiness, 
+      PublishName, PublishTime, SuspendName, 
+      SuspendTime)
+    values (#{systemtypeId,jdbcType=INTEGER}, #{systemTheme,jdbcType=VARCHAR}, #{deptId,jdbcType=INTEGER}, 
+      #{systemContent,jdbcType=VARCHAR}, #{systemState,jdbcType=INTEGER}, #{addname,jdbcType=VARCHAR}, 
+      #{addtime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP},
+      #{deletename,jdbcType=VARCHAR}, #{deletetime,jdbcType=TIMESTAMP}, #{timeliness,jdbcType=INTEGER}, 
+      #{publishname,jdbcType=VARCHAR}, #{publishtime,jdbcType=TIMESTAMP}, #{suspendname,jdbcType=VARCHAR}, 
+      #{suspendtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="System_Id" keyProperty="systemId" parameterType="com.trkj.tsm.entity.System" useGeneratedKeys="true">
+    insert into system
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="systemtypeId != null">
+        SystemType_Id,
+      </if>
+      <if test="systemTheme != null">
+        System_Theme,
+      </if>
+      <if test="deptId != null">
+        Dept_Id,
+      </if>
+      <if test="systemContent != null">
+        System_Content,
+      </if>
+      <if test="systemState != null">
+        System_State,
+      </if>
+      <if test="addname != null">
+        AddName,
+      </if>
+      <if test="addtime != null">
+        AddTime,
+      </if>
+      <if test="updatename != null">
+        UpdateName,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+      <if test="deletename != null">
+        DeleteName,
+      </if>
+      <if test="deletetime != null">
+        DeleteTime,
+      </if>
+      <if test="timeliness != null">
+        TimeLiness,
+      </if>
+      <if test="publishname != null">
+        PublishName,
+      </if>
+      <if test="publishtime != null">
+        PublishTime,
+      </if>
+      <if test="suspendname != null">
+        SuspendName,
+      </if>
+      <if test="suspendtime != null">
+        SuspendTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="systemtypeId != null">
+        #{systemtypeId,jdbcType=INTEGER},
+      </if>
+      <if test="systemTheme != null">
+        #{systemTheme,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null">
+        #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="systemContent != null">
+        #{systemContent,jdbcType=VARCHAR},
+      </if>
+      <if test="systemState != null">
+        #{systemState,jdbcType=INTEGER},
+      </if>
+      <if test="addname != null">
+        #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        #{timeliness,jdbcType=INTEGER},
+      </if>
+      <if test="publishname != null">
+        #{publishname,jdbcType=VARCHAR},
+      </if>
+      <if test="publishtime != null">
+        #{publishtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="suspendname != null">
+        #{suspendname,jdbcType=VARCHAR},
+      </if>
+      <if test="suspendtime != null">
+        #{suspendtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.entity.System">
+    update system
+    <set>
+      <if test="systemtypeId != null">
+        SystemType_Id = #{systemtypeId,jdbcType=INTEGER},
+      </if>
+      <if test="systemTheme != null">
+        System_Theme = #{systemTheme,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null">
+        Dept_Id = #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="systemContent != null">
+        System_Content = #{systemContent,jdbcType=VARCHAR},
+      </if>
+      <if test="systemState != null">
+        System_State = #{systemState,jdbcType=INTEGER},
+      </if>
+      <if test="addname != null">
+        AddName = #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        AddTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        UpdateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        DeleteName = #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        TimeLiness = #{timeliness,jdbcType=INTEGER},
+      </if>
+      <if test="publishname != null">
+        PublishName = #{publishname,jdbcType=VARCHAR},
+      </if>
+      <if test="publishtime != null">
+        PublishTime = #{publishtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="suspendname != null">
+        SuspendName = #{suspendname,jdbcType=VARCHAR},
+      </if>
+      <if test="suspendtime != null">
+        SuspendTime = #{suspendtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where System_Id = #{systemId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.entity.System">
+    update system
+    set SystemType_Id = #{systemtypeId,jdbcType=INTEGER},
+      System_Theme = #{systemTheme,jdbcType=VARCHAR},
+      Dept_Id = #{deptId,jdbcType=INTEGER},
+      System_Content = #{systemContent,jdbcType=VARCHAR},
+      System_State = #{systemState,jdbcType=INTEGER},
+      AddName = #{addname,jdbcType=VARCHAR},
+      AddTime = #{addtime,jdbcType=TIMESTAMP},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER},
+      PublishName = #{publishname,jdbcType=VARCHAR},
+      PublishTime = #{publishtime,jdbcType=TIMESTAMP},
+      SuspendName = #{suspendname,jdbcType=VARCHAR},
+      SuspendTime = #{suspendtime,jdbcType=TIMESTAMP}
+    where System_Id = #{systemId,jdbcType=INTEGER}
+  </update>
+</mapper>

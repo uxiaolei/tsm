@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.SystemselectDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.entity.Systemselect">
+    <id column="SystemSelect_Id" jdbcType="INTEGER" property="systemselectId" />
+    <result column="System_Id" jdbcType="INTEGER" property="systemId" />
+    <result column="Emp_Id" jdbcType="INTEGER" property="empId" />
+    <result column="ReadState" jdbcType="INTEGER" property="readstate" />
+    <result column="ReadTime" jdbcType="TIMESTAMP" property="readtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    SystemSelect_Id, System_Id, Emp_Id, ReadState, ReadTime
+  </sql>
+  <insert id="insertSystem" keyColumn="SystemSelect_Id" keyProperty="systemselectId" parameterType="com.trkj.tsm.entity.Systemselect">
+    insert into systemselect (System_Id, Emp_Id)
+    values (#{systemId,jdbcType=INTEGER}, #{empId,jdbcType=INTEGER})
+  </insert>
+  <select id="selectEmpIdBySystemId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from systemselect
+    where System_Id = #{systemId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from systemselect
+    where SystemSelect_Id = #{systemselectId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from systemselect
+    where SystemSelect_Id = #{systemselectId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="SystemSelect_Id" keyProperty="systemselectId" parameterType="com.trkj.tsm.entity.Systemselect" useGeneratedKeys="true">
+    insert into systemselect (System_Id, Emp_Id, ReadState, 
+      ReadTime)
+    values (#{systemId,jdbcType=INTEGER}, #{empId,jdbcType=INTEGER}, #{readstate,jdbcType=INTEGER}, 
+      #{readtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="SystemSelect_Id" keyProperty="systemselectId" parameterType="com.trkj.tsm.entity.Systemselect" useGeneratedKeys="true">
+    insert into systemselect
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="systemId != null">
+        System_Id,
+      </if>
+      <if test="empId != null">
+        Emp_Id,
+      </if>
+      <if test="readstate != null">
+        ReadState,
+      </if>
+      <if test="readtime != null">
+        ReadTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="systemId != null">
+        #{systemId,jdbcType=INTEGER},
+      </if>
+      <if test="empId != null">
+        #{empId,jdbcType=INTEGER},
+      </if>
+      <if test="readstate != null">
+        #{readstate,jdbcType=INTEGER},
+      </if>
+      <if test="readtime != null">
+        #{readtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.entity.Systemselect">
+    update systemselect
+    <set>
+      <if test="systemId != null">
+        System_Id = #{systemId,jdbcType=INTEGER},
+      </if>
+      <if test="empId != null">
+        Emp_Id = #{empId,jdbcType=INTEGER},
+      </if>
+      <if test="readstate != null">
+        ReadState = #{readstate,jdbcType=INTEGER},
+      </if>
+      <if test="readtime != null">
+        ReadTime = #{readtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where SystemSelect_Id = #{systemselectId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.entity.Systemselect">
+    update systemselect
+    set System_Id = #{systemId,jdbcType=INTEGER},
+      Emp_Id = #{empId,jdbcType=INTEGER},
+      ReadState = #{readstate,jdbcType=INTEGER},
+      ReadTime = #{readtime,jdbcType=TIMESTAMP}
+    where SystemSelect_Id = #{systemselectId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.AnnouncementDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.entity.Announcement">
+    <id column="Announcement_Id" jdbcType="INTEGER" property="announcementId" />
+    <result column="AnnouncementType_Id" jdbcType="INTEGER" property="announcementtypeId" />
+    <result column="Start_Time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="End_Time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="Announcement_Theme" jdbcType="VARCHAR" property="announcementTheme" />
+    <result column="Announcement_Content" jdbcType="VARCHAR" property="announcementContent" />
+    <result column="Announcement_State" jdbcType="INTEGER" property="announcementState" />
+    <result column="Addname" jdbcType="VARCHAR" property="addname" />
+    <result column="AddTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+    <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+    <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+    <result column="PublishName" jdbcType="VARCHAR" property="publishname" />
+    <result column="PublishTime" jdbcType="TIMESTAMP" property="publishtime" />
+    <result column="SuspenName" jdbcType="VARCHAR" property="suspenname" />
+    <result column="SuspenTime" jdbcType="TIMESTAMP" property="suspentime" />
+    <association property="announcementtype" javaType="com.trkj.tsm.entity.Announcementtype">
+      <id column="AnnouncementType_Id" jdbcType="INTEGER" property="announcementtypeId" />
+      <result column="AnnouncementType_Name" jdbcType="VARCHAR" property="announcementtypeName" />
+      <result column="Addname" jdbcType="VARCHAR" property="addname" />
+      <result column="AddTime" jdbcType="TIMESTAMP" property="addtime" />
+      <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+      <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+      <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+      <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+      <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_an">
+    an.Announcement_Id, an.AnnouncementType_Id, an.Start_Time, an.End_Time, an.Announcement_Theme, an.Announcement_Content,
+    an.Announcement_State, an.Addname, an.AddTime, an.UpdateName, an.UpdateTime, an.DeleteName, an.DeleteTime,
+    an.TimeLiness, an.PublishName, an.PublishTime, an.SuspenName, an.SuspenTime
+  </sql>
+  <sql id="Base_Column_anType">
+    ant.AnnouncementType_Id, ant.AnnouncementType_Name, ant.Addname, ant.AddTime, ant.UpdateName, ant.UpdateTime,
+    ant.DeleteName, ant.DeleteTime, ant.TimeLiness
+  </sql>
+  <select id="selectAllAn" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_an" />,
+    <include refid="Base_Column_anType" />
+    from announcement an
+    inner join announcementtype ant on an.AnnouncementType_Id=ant.AnnouncementType_Id
+    where an.TimeLiness = 0
+  </select>
+  <select id="selectAnById" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_an" />,
+    <include refid="Base_Column_anType" />
+    from announcement an
+    inner join announcementtype ant on an.AnnouncementType_Id=ant.AnnouncementType_Id
+    where an.TimeLiness = 0
+    and an.Announcement_Id = #{announcementtypeId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAnByType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_an" />,
+    <include refid="Base_Column_anType" />
+    from announcement an
+    inner join announcementtype ant on an.AnnouncementType_Id=ant.AnnouncementType_Id
+    where an.TimeLiness = 0
+    and ant.AnnouncementType_Name like CONCAT('%',#{announcementtypeName,jdbcType=VARCHAR},'%')
+  </select>
+  <select id="selectAnByContent" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_an" />,
+    <include refid="Base_Column_anType" />
+    from announcement an
+    inner join announcementtype ant on an.AnnouncementType_Id=ant.AnnouncementType_Id
+    where an.TimeLiness = 0
+    and an.Announcement_Content like CONCAT('%',#{announcementContent,jdbcType=VARCHAR},'%')
+  </select>
+  <select id="selectAnByTheme" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_an" />,
+    <include refid="Base_Column_anType" />
+    from announcement an
+    inner join announcementtype ant on an.AnnouncementType_Id=ant.AnnouncementType_Id
+    where an.TimeLiness = 0
+    and an.Announcement_Theme like CONCAT('%',#{announcementTheme,jdbcType=VARCHAR},'%')
+  </select>
+  <select id="selectAnByStateNO" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_an" />,
+    <include refid="Base_Column_anType" />
+    from announcement an
+    inner join announcementtype ant on an.AnnouncementType_Id=ant.AnnouncementType_Id
+    where an.TimeLiness = 0
+    and an.Announcement_State = 0
+    or an.Announcement_State = 2
+    and an.TimeLiness = 0
+  </select>
+  <select id="selectAnByStateYES" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_an" />,
+    <include refid="Base_Column_anType" />
+    from announcement an
+    inner join announcementtype ant on an.AnnouncementType_Id=ant.AnnouncementType_Id
+    where an.TimeLiness = 0
+    and an.Announcement_State = 1
+  </select>
+  <insert id="insertAn" keyColumn="Announcement_Id" keyProperty="announcementId" parameterType="com.trkj.tsm.entity.Announcement" useGeneratedKeys="true">
+    insert into announcement
+    (AnnouncementType_Id, Start_Time,End_Time, Announcement_Theme, Announcement_Content,Addname, AddTime)
+    values (#{announcementtypeId,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP},#{endTime,jdbcType=TIMESTAMP},
+    #{announcementTheme,jdbcType=VARCHAR}, #{announcementContent,jdbcType=VARCHAR},
+      #{addname,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateAn" parameterType="com.trkj.tsm.entity.Announcement">
+    update announcement
+    set AnnouncementType_Id = #{announcementtypeId,jdbcType=INTEGER},
+      Announcement_Theme = #{announcementTheme,jdbcType=VARCHAR},
+      Announcement_Content = #{announcementContent,jdbcType=VARCHAR},
+      Start_Time = #{startTime,jdbcType=TIMESTAMP},
+      End_Time = #{endTime,jdbcType=TIMESTAMP},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where Announcement_Id = #{announcementId,jdbcType=INTEGER}
+  </update>
+  <update id="deleteAn" parameterType="com.trkj.tsm.entity.Announcement">
+    update announcement
+    set DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER}
+    where Announcement_Id = #{announcementId,jdbcType=INTEGER}
+  </update>
+  <update id="updateAnStateGo" parameterType="com.trkj.tsm.entity.Announcement">
+    update announcement
+    set Announcement_State = #{announcementState,jdbcType=INTEGER},
+      PublishName = #{publishname,jdbcType=VARCHAR},
+      PublishTime = #{publishtime,jdbcType=TIMESTAMP}
+    where Announcement_Id = #{announcementId,jdbcType=INTEGER}
+  </update>
+  <update id="updateAnStateStop" parameterType="com.trkj.tsm.entity.Announcement">
+    update announcement
+    set Announcement_State = #{announcementState,jdbcType=INTEGER},
+      SuspenName = #{suspenname,jdbcType=VARCHAR},
+      SuspenTime = #{suspentime,jdbcType=TIMESTAMP}
+    where Announcement_Id = #{announcementId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_an" />
+    from announcement
+    where Announcement_Id = #{announcementId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from announcement
+    where Announcement_Id = #{announcementId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="Announcement_Id" keyProperty="announcementId" parameterType="com.trkj.tsm.entity.Announcement" useGeneratedKeys="true">
+    insert into announcement (AnnouncementType_Id, Start_Time, 
+      End_Time, Announcement_Theme, Announcement_Content, 
+      Announcement_State, Addname, AddTime, 
+      UpdateName, UpdateTime, DeleteName, 
+      DeleteTime, TimeLiness, PublishName, 
+      PublishTime, SuspenName, SuspenTime
+      )
+    values (#{announcementtypeId,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{announcementTheme,jdbcType=VARCHAR}, #{announcementContent,jdbcType=VARCHAR}, 
+      #{announcementState,jdbcType=INTEGER}, #{addname,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, 
+      #{updatename,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{deletename,jdbcType=VARCHAR}, 
+      #{deletetime,jdbcType=TIMESTAMP}, #{timeliness,jdbcType=INTEGER}, #{publishname,jdbcType=VARCHAR}, 
+      #{publishtime,jdbcType=TIMESTAMP}, #{suspenname,jdbcType=VARCHAR}, #{suspentime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="Announcement_Id" keyProperty="announcementId" parameterType="com.trkj.tsm.entity.Announcement" useGeneratedKeys="true">
+    insert into announcement
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="announcementtypeId != null">
+        AnnouncementType_Id,
+      </if>
+      <if test="startTime != null">
+        Start_Time,
+      </if>
+      <if test="endTime != null">
+        End_Time,
+      </if>
+      <if test="announcementTheme != null">
+        Announcement_Theme,
+      </if>
+      <if test="announcementContent != null">
+        Announcement_Content,
+      </if>
+      <if test="announcementState != null">
+        Announcement_State,
+      </if>
+      <if test="addname != null">
+        Addname,
+      </if>
+      <if test="addtime != null">
+        AddTime,
+      </if>
+      <if test="updatename != null">
+        UpdateName,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+      <if test="deletename != null">
+        DeleteName,
+      </if>
+      <if test="deletetime != null">
+        DeleteTime,
+      </if>
+      <if test="timeliness != null">
+        TimeLiness,
+      </if>
+      <if test="publishname != null">
+        PublishName,
+      </if>
+      <if test="publishtime != null">
+        PublishTime,
+      </if>
+      <if test="suspenname != null">
+        SuspenName,
+      </if>
+      <if test="suspentime != null">
+        SuspenTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="announcementtypeId != null">
+        #{announcementtypeId,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="announcementTheme != null">
+        #{announcementTheme,jdbcType=VARCHAR},
+      </if>
+      <if test="announcementContent != null">
+        #{announcementContent,jdbcType=VARCHAR},
+      </if>
+      <if test="announcementState != null">
+        #{announcementState,jdbcType=INTEGER},
+      </if>
+      <if test="addname != null">
+        #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        #{timeliness,jdbcType=INTEGER},
+      </if>
+      <if test="publishname != null">
+        #{publishname,jdbcType=VARCHAR},
+      </if>
+      <if test="publishtime != null">
+        #{publishtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="suspenname != null">
+        #{suspenname,jdbcType=VARCHAR},
+      </if>
+      <if test="suspentime != null">
+        #{suspentime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.entity.Announcement">
+    update announcement
+    <set>
+      <if test="announcementtypeId != null">
+        AnnouncementType_Id = #{announcementtypeId,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        Start_Time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        End_Time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="announcementTheme != null">
+        Announcement_Theme = #{announcementTheme,jdbcType=VARCHAR},
+      </if>
+      <if test="announcementContent != null">
+        Announcement_Content = #{announcementContent,jdbcType=VARCHAR},
+      </if>
+      <if test="announcementState != null">
+        Announcement_State = #{announcementState,jdbcType=INTEGER},
+      </if>
+      <if test="addname != null">
+        Addname = #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        AddTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        UpdateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        DeleteName = #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        TimeLiness = #{timeliness,jdbcType=INTEGER},
+      </if>
+      <if test="publishname != null">
+        PublishName = #{publishname,jdbcType=VARCHAR},
+      </if>
+      <if test="publishtime != null">
+        PublishTime = #{publishtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="suspenname != null">
+        SuspenName = #{suspenname,jdbcType=VARCHAR},
+      </if>
+      <if test="suspentime != null">
+        SuspenTime = #{suspentime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Announcement_Id = #{announcementId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.entity.Announcement">
+    update announcement
+    set AnnouncementType_Id = #{announcementtypeId,jdbcType=INTEGER},
+      Start_Time = #{startTime,jdbcType=TIMESTAMP},
+      End_Time = #{endTime,jdbcType=TIMESTAMP},
+      Announcement_Theme = #{announcementTheme,jdbcType=VARCHAR},
+      Announcement_Content = #{announcementContent,jdbcType=VARCHAR},
+      Announcement_State = #{announcementState,jdbcType=INTEGER},
+      Addname = #{addname,jdbcType=VARCHAR},
+      AddTime = #{addtime,jdbcType=TIMESTAMP},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER},
+      PublishName = #{publishname,jdbcType=VARCHAR},
+      PublishTime = #{publishtime,jdbcType=TIMESTAMP},
+      SuspenName = #{suspenname,jdbcType=VARCHAR},
+      SuspenTime = #{suspentime,jdbcType=TIMESTAMP}
+    where Announcement_Id = #{announcementId,jdbcType=INTEGER}
+  </update>
+</mapper>

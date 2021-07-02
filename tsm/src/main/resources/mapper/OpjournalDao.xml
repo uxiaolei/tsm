@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.OpjournalDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.entity.Opjournal">
+    <id column="OpJournal_Id" jdbcType="INTEGER" property="opjournalId" />
+    <result column="Operator" jdbcType="INTEGER" property="operator" />
+    <result column="OpContent" jdbcType="VARCHAR" property="opcontent" />
+    <result column="OpTiome" jdbcType="TIMESTAMP" property="optiome" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    OpJournal_Id, Operator, OpContent, OpTiome
+  </sql>
+  <insert id="insertOpjournal" keyColumn="OpJournal_Id" keyProperty="opjournalId" parameterType="com.trkj.tsm.entity.Opjournal" useGeneratedKeys="true">
+    insert into opjournal (Operator, OpContent, OpTiome)
+    values (#{operator,jdbcType=VARCHAR}, #{opcontent,jdbcType=VARCHAR}, #{optiome,jdbcType=TIMESTAMP})
+  </insert>
+  <select id="selectAllOpJ" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from opjournal
+    order by OpJournal_Id desc
+  </select>
+  <select id="selectOpJByOperator" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from opjournal
+    where Operator like CONCAT('%',#{operator},'%')
+    order by OpJournal_Id desc
+  </select>
+  <select id="selectOpJByOpcontent" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from opjournal
+    where OpContent like CONCAT('%',#{opcontent},'%')
+    order by OpJournal_Id desc
+  </select>
+  <select id="selectOpJByOpTiome" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from opjournal
+    where OpTiome like CONCAT('%',#{optiome},'%')
+    order by OpJournal_Id desc
+  </select>
+  <select id="selectOpJByOpTiomeAndOperator" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from opjournal
+    where OpTiome like CONCAT('%',#{param1},'%')
+    and Operator like CONCAT('%',#{param2},'%')
+    order by OpJournal_Id desc
+  </select>
+  <select id="selectOpJByOpTiomeAndOpContent" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from opjournal
+    where OpTiome like CONCAT('%',#{param1},'%')
+    and OpContent like CONCAT('%',#{param2},'%')
+    order by OpJournal_Id desc
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from opjournal
+    where OpJournal_Id = #{opjournalId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from opjournal
+    where OpJournal_Id = #{opjournalId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="OpJournal_Id" keyProperty="opjournalId" parameterType="com.trkj.tsm.entity.Opjournal" useGeneratedKeys="true">
+    insert into opjournal (Operator, OpContent, OpTiome
+      )
+    values (#{operator,jdbcType=VARCHAR}, #{opcontent,jdbcType=VARCHAR}, #{optiome,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="OpJournal_Id" keyProperty="opjournalId" parameterType="com.trkj.tsm.entity.Opjournal" useGeneratedKeys="true">
+    insert into opjournal
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="operator != null">
+        Operator,
+      </if>
+      <if test="opcontent != null">
+        OpContent,
+      </if>
+      <if test="optiome != null">
+        OpTiome,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="operator != null">
+        #{Operator,jdbcType=INTEGER},
+      </if>
+      <if test="opcontent != null">
+        #{opcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="optiome != null">
+        #{optiome,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.entity.Opjournal">
+    update opjournal
+    <set>
+      <if test="operator != null">
+        Operator = #{operator,jdbcType=INTEGER},
+      </if>
+      <if test="opcontent != null">
+        OpContent = #{opcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="optiome != null">
+        OpTiome = #{optiome,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where OpJournal_Id = #{opjournalId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.entity.Opjournal">
+    update opjournal
+    set Operator = #{operator,jdbcType=INTEGER},
+      OpContent = #{opcontent,jdbcType=VARCHAR},
+      OpTiome = #{optiome,jdbcType=TIMESTAMP}
+    where OpJournal_Id = #{opjournalId,jdbcType=INTEGER}
+  </update>
+</mapper>

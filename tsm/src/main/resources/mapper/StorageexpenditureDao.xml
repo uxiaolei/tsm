@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.StorageexpenditureDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.entity.Storageexpenditure">
+    <id column="StorageExpenditure_Id" jdbcType="INTEGER" property="storageexpenditureId" />
+    <result column="MBookStorage_Id" jdbcType="INTEGER" property="mbookstorageId" />
+    <result column="Refund_Name" jdbcType="VARCHAR" property="refundName" />
+    <result column="Refund_Date" jdbcType="TIMESTAMP" property="refundDate" />
+    <result column="Refund_details" jdbcType="VARCHAR" property="refundDetails" />
+    <result column="Refund_Count" jdbcType="INTEGER" property="refundCount" />
+    <result column="TotalMoney" jdbcType="DECIMAL" property="totalmoney" />
+    <result column="UseCash" jdbcType="DECIMAL" property="usecash" />
+    <result column="AddName" jdbcType="VARCHAR" property="addname" />
+    <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+    <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+    <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+    <result column="Approval" jdbcType="INTEGER" property="approval" />
+    <result column="AppName" jdbcType="VARCHAR" property="appname" />
+    <result column="AppTime" jdbcType="TIMESTAMP" property="apptime" />
+    <result column="Revoke_AppName" jdbcType="VARCHAR" property="revokeAppname" />
+    <result column="Revoke_AppTime" jdbcType="TIMESTAMP" property="revokeApptime" />
+
+    <association property="bookstorage" javaType="com.trkj.tsm.entity.Bookstorage">
+      <id column="MBookStorage_Id" jdbcType="INTEGER" property="mbookstorageId" />
+      <result column="Emp_Id" jdbcType="INTEGER" property="empId" />
+      <result column="StorageCount" jdbcType="INTEGER" property="storagecount" />
+      <result column="StorageTime" jdbcType="TIMESTAMP" property="storagetime" />
+      <result column="Book_Id" jdbcType="INTEGER" property="bookId" />
+      <result column="TotalPrice" jdbcType="DECIMAL" property="totalprice" />
+      <result column="Approval" jdbcType="INTEGER" property="approval" />
+      <result column="AppName" jdbcType="VARCHAR" property="appname" />
+      <result column="AppTime" jdbcType="TIMESTAMP" property="apptime" />
+      <result column="Revoke_AppName" jdbcType="VARCHAR" property="revokeAppname" />
+      <result column="Revoke_AppTime" jdbcType="TIMESTAMP" property="revokeApptime" />
+      <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+      <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+      <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+      <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+      <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+    </association>
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    StorageExpenditure_Id, MBookStorage_Id, Refund_Name, Refund_Date, Refund_details, 
+    Refund_Count, TotalMoney, UseCash, AddName, ADDTIME, UpdateName, UpdateTime, DeleteName, 
+    DeleteTime, TimeLiness, Approval, AppName, AppTime, Revoke_AppName, Revoke_AppTime
+  </sql>
+  <sql id="Base_Column_List2">
+    st.StorageExpenditure_Id, st.MBookStorage_Id, st.Refund_Name, st.Refund_Date, st.Refund_details,
+    st.Refund_Count, st.TotalMoney, st.UseCash, st.AddName, st.ADDTIME, st.UpdateName, st.UpdateTime, st.DeleteName,
+    st.DeleteTime, st.TimeLiness, st.Approval, st.AppName, st.AppTime, st.Revoke_AppName, st.Revoke_AppTime
+  </sql>
+  <sql id="Base_Column_bookstorage">
+    bs.MBookStorage_Id, bs.Emp_Id, bs.StorageCount, bs.StorageTime, bs.Book_Id, bs.TotalPrice, bs.Approval,
+    bs.AppName, bs.AppTime, bs.Revoke_AppName, bs.Revoke_AppTime, bs.UpdateName, bs.UpdateTime, bs.DeleteName,
+    bs.DeleteTime, bs.TimeLiness
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List2" />,
+    <include refid="Base_Column_bookstorage" />
+    from storageexpenditure st
+    where StorageExpenditure_Id = #{storageexpenditureId,jdbcType=INTEGER}
+  </select>
+  <!--显示所有-->
+  <select id="selectALLstorageex" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from storageexpenditure st
+    inner join bookstorage bs on st.MBookStorage_Id=bs.MBookStorage_Id
+    where st.TimeLiness=0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from storageexpenditure
+    where StorageExpenditure_Id = #{storageexpenditureId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="StorageExpenditure_Id" keyProperty="storageexpenditureId" parameterType="com.trkj.tsm.entity.Storageexpenditure" useGeneratedKeys="true">
+    insert into storageexpenditure (MBookStorage_Id, Refund_Name, Refund_Date, 
+      Refund_details, Refund_Count, TotalMoney, 
+      UseCash, AddName, ADDTIME, 
+      UpdateName, UpdateTime, DeleteName, 
+      DeleteTime, TimeLiness, Approval, 
+      AppName, AppTime, Revoke_AppName, 
+      Revoke_AppTime)
+    values (#{mbookstorageId,jdbcType=INTEGER}, #{refundName,jdbcType=VARCHAR}, #{refundDate,jdbcType=TIMESTAMP}, 
+      #{refundDetails,jdbcType=VARCHAR}, #{refundCount,jdbcType=INTEGER}, #{totalmoney,jdbcType=DECIMAL}, 
+      #{usecash,jdbcType=DECIMAL}, #{addname,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, 
+      #{updatename,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{deletename,jdbcType=VARCHAR}, 
+      #{deletetime,jdbcType=TIMESTAMP}, #{timeliness,jdbcType=INTEGER}, #{approval,jdbcType=INTEGER}, 
+      #{appname,jdbcType=VARCHAR}, #{apptime,jdbcType=TIMESTAMP}, #{revokeAppname,jdbcType=VARCHAR}, 
+      #{revokeApptime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="StorageExpenditure_Id" keyProperty="storageexpenditureId" parameterType="com.trkj.tsm.entity.Storageexpenditure" useGeneratedKeys="true">
+    insert into storageexpenditure
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mbookstorageId != null">
+        MBookStorage_Id,
+      </if>
+      <if test="refundName != null">
+        Refund_Name,
+      </if>
+      <if test="refundDate != null">
+        Refund_Date,
+      </if>
+      <if test="refundDetails != null">
+        Refund_details,
+      </if>
+      <if test="refundCount != null">
+        Refund_Count,
+      </if>
+      <if test="totalmoney != null">
+        TotalMoney,
+      </if>
+      <if test="usecash != null">
+        UseCash,
+      </if>
+      <if test="addname != null">
+        AddName,
+      </if>
+      <if test="addtime != null">
+        ADDTIME,
+      </if>
+      <if test="updatename != null">
+        UpdateName,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+      <if test="deletename != null">
+        DeleteName,
+      </if>
+      <if test="deletetime != null">
+        DeleteTime,
+      </if>
+      <if test="timeliness != null">
+        TimeLiness,
+      </if>
+      <if test="approval != null">
+        Approval,
+      </if>
+      <if test="appname != null">
+        AppName,
+      </if>
+      <if test="apptime != null">
+        AppTime,
+      </if>
+      <if test="revokeAppname != null">
+        Revoke_AppName,
+      </if>
+      <if test="revokeApptime != null">
+        Revoke_AppTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mbookstorageId != null">
+        #{mbookstorageId,jdbcType=INTEGER},
+      </if>
+      <if test="refundName != null">
+        #{refundName,jdbcType=VARCHAR},
+      </if>
+      <if test="refundDate != null">
+        #{refundDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refundDetails != null">
+        #{refundDetails,jdbcType=VARCHAR},
+      </if>
+      <if test="refundCount != null">
+        #{refundCount,jdbcType=INTEGER},
+      </if>
+      <if test="totalmoney != null">
+        #{totalmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="usecash != null">
+        #{usecash,jdbcType=DECIMAL},
+      </if>
+      <if test="addname != null">
+        #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        #{timeliness,jdbcType=INTEGER},
+      </if>
+      <if test="approval != null">
+        #{approval,jdbcType=INTEGER},
+      </if>
+      <if test="appname != null">
+        #{appname,jdbcType=VARCHAR},
+      </if>
+      <if test="apptime != null">
+        #{apptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="revokeAppname != null">
+        #{revokeAppname,jdbcType=VARCHAR},
+      </if>
+      <if test="revokeApptime != null">
+        #{revokeApptime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.entity.Storageexpenditure">
+    update storageexpenditure
+    <set>
+      <if test="mbookstorageId != null">
+        MBookStorage_Id = #{mbookstorageId,jdbcType=INTEGER},
+      </if>
+      <if test="refundName != null">
+        Refund_Name = #{refundName,jdbcType=VARCHAR},
+      </if>
+      <if test="refundDate != null">
+        Refund_Date = #{refundDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refundDetails != null">
+        Refund_details = #{refundDetails,jdbcType=VARCHAR},
+      </if>
+      <if test="refundCount != null">
+        Refund_Count = #{refundCount,jdbcType=INTEGER},
+      </if>
+      <if test="totalmoney != null">
+        TotalMoney = #{totalmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="usecash != null">
+        UseCash = #{usecash,jdbcType=DECIMAL},
+      </if>
+      <if test="addname != null">
+        AddName = #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        ADDTIME = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        UpdateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        DeleteName = #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        TimeLiness = #{timeliness,jdbcType=INTEGER},
+      </if>
+      <if test="approval != null">
+        Approval = #{approval,jdbcType=INTEGER},
+      </if>
+      <if test="appname != null">
+        AppName = #{appname,jdbcType=VARCHAR},
+      </if>
+      <if test="apptime != null">
+        AppTime = #{apptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="revokeAppname != null">
+        Revoke_AppName = #{revokeAppname,jdbcType=VARCHAR},
+      </if>
+      <if test="revokeApptime != null">
+        Revoke_AppTime = #{revokeApptime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where StorageExpenditure_Id = #{storageexpenditureId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.entity.Storageexpenditure">
+    update storageexpenditure
+    set MBookStorage_Id = #{mbookstorageId,jdbcType=INTEGER},
+      Refund_Name = #{refundName,jdbcType=VARCHAR},
+      Refund_Date = #{refundDate,jdbcType=TIMESTAMP},
+      Refund_details = #{refundDetails,jdbcType=VARCHAR},
+      Refund_Count = #{refundCount,jdbcType=INTEGER},
+      TotalMoney = #{totalmoney,jdbcType=DECIMAL},
+      UseCash = #{usecash,jdbcType=DECIMAL},
+      AddName = #{addname,jdbcType=VARCHAR},
+      ADDTIME = #{addtime,jdbcType=TIMESTAMP},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER},
+      Approval = #{approval,jdbcType=INTEGER},
+      AppName = #{appname,jdbcType=VARCHAR},
+      AppTime = #{apptime,jdbcType=TIMESTAMP},
+      Revoke_AppName = #{revokeAppname,jdbcType=VARCHAR},
+      Revoke_AppTime = #{revokeApptime,jdbcType=TIMESTAMP}
+    where StorageExpenditure_Id = #{storageexpenditureId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.ReturnvisitDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.vo.ReturnvisitVo">
+    <id column="ReturnVisit_Id" jdbcType="INTEGER" property="returnvisitId" />
+    <result column="Register_Id" jdbcType="INTEGER" property="registerId" />
+    <result column="Emp_Id" jdbcType="INTEGER" property="empId" />
+    <result column="ReturnVisitMode" jdbcType="VARCHAR" property="returnvisitmode" />
+    <result column="ReturnVisitDate" jdbcType="TIMESTAMP" property="returnvisitdate" />
+    <result column="ReturnVisitBack" jdbcType="VARCHAR" property="returnvisitback" />
+    <result column="ReturnContent" jdbcType="VARCHAR" property="returncontent" />
+    <result column="AddName" jdbcType="VARCHAR" property="addname" />
+    <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+    <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+    <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+
+    <association property="registerVo" javaType="com.trkj.tsm.vo.RegisterVo">
+      <id column="Register_Id" jdbcType="INTEGER" property="registerId" />
+      <result column="Source_Id" jdbcType="INTEGER" property="sourceId" />
+      <result column="Course_Id" jdbcType="INTEGER" property="courseId" />
+      <result column="DetailCourse_Id" jdbcType="INTEGER" property="detailcourseId" />
+      <result column="Emp_Id" jdbcType="INTEGER" property="empId" />
+      <result column="Phone" jdbcType="VARCHAR" property="phone" />
+      <result column="ConsultAnt" jdbcType="VARCHAR" property="consultant" />
+      <result column="Sex" jdbcType="VARCHAR" property="sex" />
+      <result column="ConsultContent" jdbcType="VARCHAR" property="consultcontent" />
+      <result column="AttentState" jdbcType="INTEGER" property="attentstate" />
+      <result column="AddName" jdbcType="VARCHAR" property="addname" />
+      <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+      <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+      <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+      <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+      <result column="LastUpdateName" jdbcType="VARCHAR" property="lastupdatename" />
+      <result column="LastUpdateTime" jdbcType="TIMESTAMP" property="lastupdatetime" />
+      <result column="PayState" jdbcType="INTEGER" property="paystate" />
+    </association>
+
+    <association javaType="com.trkj.tsm.vo.EmpVo" property="empVo" >
+      <id column="Emp_Id" jdbcType="INTEGER" property="empId" />
+      <result column="Dept_Id" jdbcType="INTEGER" property="deptId" />
+      <result column="JobNumber" jdbcType="VARCHAR" property="jobnumber" />
+      <result column="Emp_Name" jdbcType="VARCHAR" property="empName" />
+      <result column="Emp_Sex" jdbcType="CHAR" property="empSex" />
+      <result column="Emp_Phone" jdbcType="VARCHAR" property="empPhone" />
+      <result column="E_mail" jdbcType="VARCHAR" property="eMail" />
+      <result column="Birthday" jdbcType="TIMESTAMP" property="birthday" />
+      <result column="Education" jdbcType="VARCHAR" property="education" />
+      <result column="Graduate" jdbcType="VARCHAR" property="graduate" />
+      <result column="Remarks" jdbcType="VARCHAR" property="remarks" />
+      <result column="Address" jdbcType="VARCHAR" property="address" />
+      <result column="Addname" jdbcType="VARCHAR" property="addname" />
+      <result column="AddTime" jdbcType="TIMESTAMP" property="addtime" />
+      <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+      <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+      <result column="LeaveName" jdbcType="VARCHAR" property="leavename" />
+      <result column="LeaveTime" jdbcType="TIMESTAMP" property="leavetime" />
+      <result column="password" jdbcType="VARCHAR" property="password" />
+    </association>
+
+
+  </resultMap>
+  <sql id="Base_Column_List1">
+    ReturnVisit_Id, Register_Id, Emp_Id, ReturnVisitMode, ReturnVisitDate, ReturnVisitBack,
+    ReturnContent, AddName, ADDTIME, TimeLiness, DeleteName, DeleteTime
+  </sql>
+  <sql id="Base_Column_List">
+    re.ReturnVisit_Id, re.Register_Id, re.Emp_Id, re.ReturnVisitMode, re.ReturnVisitDate, re.ReturnVisitBack,
+    re.ReturnContent, re.AddName, re.ADDTIME, re.TimeLiness, re.DeleteName, re.DeleteTime
+  </sql>
+  <sql id="Base_Column_Register">
+    r.Register_Id, r.Source_Id, r.Course_Id, r.DetailCourse_Id, r.Emp_Id,  r.Phone, r.ConsultAnt, r.Sex,
+    r.ConsultContent, r.AttentState, r.AddName, r.ADDTIME, r.TimeLiness, r.DeleteName, r.DeleteTime,
+    r.LastUpdateName, r.LastUpdateTime, r.PayState
+  </sql>
+  <sql id="Base_Column_Emp">
+    e.Emp_Id, e.Dept_Id, e.JobNumber, e.Emp_Name, e.Emp_Sex, e.Emp_Phone, e.E_mail, e.Birthday, e.Education,
+    e.Graduate, e.Remarks, e.Address, e.Addname, e.AddTime, e.UpdateName, e.UpdateTime, e.LeaveName,
+    e.LeaveTime,e.password
+  </sql>
+  <!--点击回访查询显示-->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List1" />
+    from returnvisit
+    where Register_Id = #{feesId,jdbcType=INTEGER}
+    AND TimeLiness=0
+  </select>
+
+  <select id="selectAllvisit" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />,
+    <include refid="Base_Column_Register" />,
+    <include refid="Base_Column_Emp" />
+    from returnvisit re
+    inner join register r on re.Register_Id=r.Register_Id
+    inner join emp e on re.Emp_Id=e.Emp_Id
+    where re.TimeLiness
+  </select>
+  <!--回访次数-->
+  <select id="selregistertotal" resultMap="BaseResultMap">
+    select Register_Id,count(1) as total from returnvisit
+    where TimeLiness=0 group by Register_Id;
+  </select>
+
+  <!--  <select id="selectByRegisterId" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />,
+      <include refid="Base_Column_Register" />,
+      <include refid="Base_Column_Emp" />
+      from returnvisit re
+      inner join register r on re.Register_Id=r.Register_Id
+      inner join emp em on re.Emp_Id=em.Emp_Id
+      where re.TimeLiness = 0
+      and re.Register_Id = #{registerId,jdbcType=INTEGER}
+    </select>-->
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from returnvisit
+    where ReturnVisit_Id = #{returnvisitId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="ReturnVisit_Id" keyProperty="returnvisitId" parameterType="com.trkj.tsm.vo.ReturnvisitVo" useGeneratedKeys="true">
+    insert into returnvisit (Register_Id, Emp_Id, ReturnVisitMode, 
+      ReturnVisitDate, ReturnVisitBack, ReturnContent, 
+      AddName, ADDTIME, TimeLiness, 
+      DeleteName, DeleteTime)
+    values (#{registerId,jdbcType=INTEGER}, #{empId,jdbcType=INTEGER}, #{returnvisitmode,jdbcType=VARCHAR}, 
+      #{returnvisitdate,jdbcType=TIMESTAMP}, #{returnvisitback,jdbcType=VARCHAR}, #{returncontent,jdbcType=VARCHAR}, 
+      #{addname,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, #{timeliness,jdbcType=INTEGER}, 
+      #{deletename,jdbcType=VARCHAR}, #{deletetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="ReturnVisit_Id" keyProperty="returnvisitId" parameterType="com.trkj.tsm.vo.ReturnvisitVo" useGeneratedKeys="true">
+    insert into returnvisit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="registerId != null">
+        Register_Id,
+      </if>
+      <if test="empId != null">
+        Emp_Id,
+      </if>
+      <if test="returnvisitmode != null">
+        ReturnVisitMode,
+      </if>
+      <if test="returnvisitdate != null">
+        ReturnVisitDate,
+      </if>
+      <if test="returnvisitback != null">
+        ReturnVisitBack,
+      </if>
+      <if test="returncontent != null">
+        ReturnContent,
+      </if>
+      <if test="addname != null">
+        AddName,
+      </if>
+      <if test="addtime != null">
+        ADDTIME,
+      </if>
+      <if test="timeliness != null">
+        TimeLiness,
+      </if>
+      <if test="deletename != null">
+        DeleteName,
+      </if>
+      <if test="deletetime != null">
+        DeleteTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="registerId != null">
+        #{registerId,jdbcType=INTEGER},
+      </if>
+      <if test="empId != null">
+        #{empId,jdbcType=INTEGER},
+      </if>
+      <if test="returnvisitmode != null">
+        #{returnvisitmode,jdbcType=VARCHAR},
+      </if>
+      <if test="returnvisitdate != null">
+        #{returnvisitdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnvisitback != null">
+        #{returnvisitback,jdbcType=VARCHAR},
+      </if>
+      <if test="returncontent != null">
+        #{returncontent,jdbcType=VARCHAR},
+      </if>
+      <if test="addname != null">
+        #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        #{timeliness,jdbcType=INTEGER},
+      </if>
+      <if test="deletename != null">
+        #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.vo.ReturnvisitVo">
+    update returnvisit
+    <set>
+      <if test="registerId != null">
+        Register_Id = #{registerId,jdbcType=INTEGER},
+      </if>
+      <if test="empId != null">
+        Emp_Id = #{empId,jdbcType=INTEGER},
+      </if>
+      <if test="returnvisitmode != null">
+        ReturnVisitMode = #{returnvisitmode,jdbcType=VARCHAR},
+      </if>
+      <if test="returnvisitdate != null">
+        ReturnVisitDate = #{returnvisitdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnvisitback != null">
+        ReturnVisitBack = #{returnvisitback,jdbcType=VARCHAR},
+      </if>
+      <if test="returncontent != null">
+        ReturnContent = #{returncontent,jdbcType=VARCHAR},
+      </if>
+      <if test="addname != null">
+        AddName = #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        ADDTIME = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        TimeLiness = #{timeliness,jdbcType=INTEGER},
+      </if>
+      <if test="deletename != null">
+        DeleteName = #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ReturnVisit_Id = #{returnvisitId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.vo.ReturnvisitVo">
+    update returnvisit
+    set Register_Id = #{registerId,jdbcType=INTEGER},
+      Emp_Id = #{empId,jdbcType=INTEGER},
+      ReturnVisitMode = #{returnvisitmode,jdbcType=VARCHAR},
+      ReturnVisitDate = #{returnvisitdate,jdbcType=TIMESTAMP},
+      ReturnVisitBack = #{returnvisitback,jdbcType=VARCHAR},
+      ReturnContent = #{returncontent,jdbcType=VARCHAR},
+      AddName = #{addname,jdbcType=VARCHAR},
+      ADDTIME = #{addtime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER},
+      DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP}
+    where ReturnVisit_Id = #{returnvisitId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.TrainingPeriodDao">
+    <resultMap type="com.trkj.tsm.entity.TrainingPeriod" id="TrainingperiodMap">
+        <result property="periodId" column="Period_Id" jdbcType="INTEGER"/>
+        <result property="period" column="Period" jdbcType="VARCHAR"/>
+        <result property="addname" column="AddName" jdbcType="VARCHAR"/>
+        <result property="addtime" column="ADDTIME" jdbcType="TIMESTAMP"/>
+        <result property="updatename" column="UpdateName" jdbcType="VARCHAR"/>
+        <result property="updatetime" column="UpdateTime" jdbcType="TIMESTAMP"/>
+        <result property="deletename" column="DeleteName" jdbcType="VARCHAR"/>
+        <result property="deletetime" column="DeleteTime" jdbcType="TIMESTAMP"/>
+        <result property="timeliness" column="TimeLiness" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      Period_Id, Period, AddName, ADDTIME, UpdateName, UpdateTime,
+      DeleteName, DeleteTime, TimeLiness
+    </sql>
+
+    <!--查询所有-->
+    <select id="selectAllTrainingPeriod" resultMap="TrainingperiodMap">
+        select
+        <include refid="Base_Column_List" />
+        from trainingperiod
+        where TimeLiness = 0
+    </select>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TrainingperiodMap">
+        select
+          Period_Id, Period, AddName, ADDTIME, UpdateName, UpdateTime, DeleteName, DeleteTime, TimeLiness
+        from tr01904.trainingperiod
+        where Period_Id = #{periodId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TrainingperiodMap">
+        select
+          Period_Id, Period, AddName, ADDTIME, UpdateName, UpdateTime, DeleteName, DeleteTime, TimeLiness
+        from tr01904.trainingperiod
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TrainingperiodMap">
+        select
+        Period_Id, Period, AddName, ADDTIME, UpdateName, UpdateTime, DeleteName, DeleteTime, TimeLiness
+        from tr01904.trainingperiod
+        <where>
+            <if test="periodId != null">
+                and Period_Id = #{periodId}
+            </if>
+            <if test="period != null and period != ''">
+                and Period = #{period}
+            </if>
+            <if test="addname != null and addname != ''">
+                and AddName = #{addname}
+            </if>
+            <if test="addtime != null">
+                and ADDTIME = #{addtime}
+            </if>
+            <if test="updatename != null and updatename != ''">
+                and UpdateName = #{updatename}
+            </if>
+            <if test="updatetime != null">
+                and UpdateTime = #{updatetime}
+            </if>
+            <if test="deletename != null and deletename != ''">
+                and DeleteName = #{deletename}
+            </if>
+            <if test="deletetime != null">
+                and DeleteTime = #{deletetime}
+            </if>
+            <if test="timeliness != null">
+                and TimeLiness = #{timeliness}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="periodId" useGeneratedKeys="true">
+        insert into trainingperiod(Period, AddName, ADDTIME, UpdateName, UpdateTime, DeleteName, DeleteTime, TimeLiness)
+        values (#{period}, #{addname}, #{addtime}, #{updatename}, #{updatetime}, #{deletename}, #{deletetime}, #{timeliness})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="periodId" useGeneratedKeys="true">
+        insert into trainingperiod(Period, AddName, ADDTIME, UpdateName, UpdateTime, DeleteName, DeleteTime,
+        TimeLiness)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.period}, #{entity.addname}, #{entity.addtime}, #{entity.updatename}, #{entity.updatetime},
+            #{entity.deletename}, #{entity.deletetime}, #{entity.timeliness})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="periodId" useGeneratedKeys="true">
+        insert into trainingperiod(Period, AddName, ADDTIME, UpdateName, UpdateTime, DeleteName, DeleteTime,
+        TimeLiness)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.period}, #{entity.addname}, #{entity.addtime}, #{entity.updatename}, #{entity.updatetime},
+            #{entity.deletename}, #{entity.deletetime}, #{entity.timeliness})
+        </foreach>
+        on duplicate key update
+        Period = values(Period) , AddName = values(AddName) , ADDTIME = values(ADDTIME) , UpdateName =
+        values(UpdateName) , UpdateTime = values(UpdateTime) , DeleteName = values(DeleteName) , DeleteTime =
+        values(DeleteTime) , TimeLiness = values(TimeLiness)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="updateByTrainingPeriodKey">
+        update trainingperiod
+        <set>
+            <if test="period != null">
+                Period = #{period},
+            </if>
+            <if test="addname != null">
+                AddName = #{addname},
+            </if>
+            <if test="addtime != null">
+                ADDTIME = #{addtime},
+            </if>
+            <if test="updatename != null">
+                UpdateName = #{updatename},
+            </if>
+            <if test="updatetime != null">
+                UpdateTime = #{updatetime},
+            </if>
+            <if test="deletename != null">
+                DeleteName = #{deletename},
+            </if>
+            <if test="deletetime != null">
+                DeleteTime = #{deletetime},
+            </if>
+            <if test="timeliness != null">
+                TimeLiness = #{timeliness},
+            </if>
+        </set>
+        where Period_Id = #{periodId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from trainingperiod where Period_Id = #{periodId}
+    </delete>
+
+    <!--修改删除人与时效性-->
+    <update id="deleteByTrainingPeriod" parameterType="com.trkj.tsm.entity.TrainingPeriod">
+        update trainingperiod
+        set
+          DeleteName = #{deletename},
+          DeleteTime = #{deletetime},
+          TimeLiness = #{timeliness}
+        where Period_Id = #{periodId}
+    </update>
+
+</mapper>
+

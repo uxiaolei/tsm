@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.EntryfeesDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.entity.Entryfees">
+    <id column="Fees_Id" jdbcType="INTEGER" property="feesId" />
+    <result column="Register_Id" jdbcType="INTEGER" property="registerId" />
+    <result column="Course_Id" jdbcType="INTEGER" property="courseId" />
+    <result column="Fees_Receivable" jdbcType="DECIMAL" property="feesReceivable" />
+    <result column="Fees_Name" jdbcType="VARCHAR" property="feesName" />
+    <result column="Fees_Type" jdbcType="INTEGER" property="feesType" />
+    <result column="Fees_Advance" jdbcType="DECIMAL" property="feesAdvance" />
+    <result column="Receipts" jdbcType="DECIMAL" property="receipts" />
+    <result column="AddName" jdbcType="VARCHAR" property="addname" />
+    <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+    <result column="Fees_State" jdbcType="INTEGER" property="feesState" />
+    <result column="ApprovalName" jdbcType="VARCHAR" property="approvalname" />
+    <result column="ApprovalTime" jdbcType="TIMESTAMP" property="approvaltime" />
+    <result column="RevokeAppName" jdbcType="VARCHAR" property="revokeappname" />
+    <result column="RevokeAppTime" jdbcType="TIMESTAMP" property="revokeapptime" />
+    <result column="Accumulated" jdbcType="DECIMAL" property="accumulated" />
+
+    <association property="register" javaType="com.trkj.tsm.entity.Register">
+      <id column="Register_Id" jdbcType="INTEGER" property="registerId" />
+      <result column="Source_Id" jdbcType="INTEGER" property="sourceId" />
+      <result column="Course_Id" jdbcType="INTEGER" property="courseId" />
+      <result column="DetailCourse_Id" jdbcType="INTEGER" property="detailcourseId" />
+      <result column="Emp_Id" jdbcType="INTEGER" property="empId" />
+      <result column="Phone" jdbcType="VARCHAR" property="phone" />
+      <result column="ConsultAnt" jdbcType="VARCHAR" property="consultant" />
+      <result column="Sex" jdbcType="VARCHAR" property="sex" />
+      <result column="ConsultContent" jdbcType="VARCHAR" property="consultcontent" />
+      <result column="AttentState" jdbcType="INTEGER" property="attentstate" />
+      <result column="AddName" jdbcType="VARCHAR" property="addname" />
+      <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+      <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+      <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+      <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+      <result column="LastUpdateName" jdbcType="VARCHAR" property="lastupdatename" />
+      <result column="LastUpdateTime" jdbcType="TIMESTAMP" property="lastupdatetime" />
+      <result column="PayState" jdbcType="INTEGER" property="paystate" />
+    </association>
+
+    <association property="course" javaType="com.trkj.tsm.entity.Course">
+      <id column="Course_id" jdbcType="INTEGER" property="courseId" />
+      <result column="Course_Name" jdbcType="VARCHAR" property="courseName" />
+      <result column="Course_State" jdbcType="VARCHAR" property="courseState" />
+      <result column="Classhours" jdbcType="INTEGER" property="classhours" />
+      <result column="Course_Money" jdbcType="DECIMAL" property="courseMoney" />
+      <result column="AddName" jdbcType="VARCHAR" property="addname" />
+      <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+      <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+      <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+      <result column="StopTime" jdbcType="TIMESTAMP" property="stoptime" />
+      <result column="StopName" jdbcType="VARCHAR" property="stopname" />
+      <result column="BeginTime" jdbcType="TIMESTAMP" property="begintime" />
+      <result column="BeginName" jdbcType="VARCHAR" property="beginname" />
+      <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+      <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+      <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+    </association>
+
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    Fees_Id, Register_Id, Course_Id, Fees_Receivable, Fees_Name, Fees_Type, Fees_Advance, 
+    Receipts, AddName, ADDTIME, UpdateName, UpdateTime, TimeLiness, Fees_State, ApprovalName, 
+    ApprovalTime, RevokeAppName, RevokeAppTime,Accumulated
+  </sql>
+  <sql id="Base_Column_List2">
+    en.Fees_Id, en.Register_Id, en.Course_Id, en.Fees_Receivable, en.Fees_Name, en.Fees_Type, en.Fees_Advance,
+    en.Receipts, en.AddName, en.ADDTIME, en.UpdateName, en.UpdateTime, en.TimeLiness, en.Fees_State, en.ApprovalName,
+    en.ApprovalTime, en.RevokeAppName, en.RevokeAppTime, en.Accumulated
+  </sql>
+  <sql id="Base_Column_Register">
+    r.Register_Id, r.Source_Id, r.Course_Id, r.DetailCourse_Id, r.Emp_Id,  r.Phone, r.ConsultAnt, r.Sex,
+    r.ConsultContent, r.AttentState, r.AddName, r.ADDTIME, r.TimeLiness, r.DeleteName, r.DeleteTime,
+    r.LastUpdateName, r.LastUpdateTime, r.PayState
+  </sql>
+  <sql id="Base_Column_Course">
+    c.Course_id, c.Course_Name, c.Course_State, c.Classhours, c.Course_Money, c.ClassType_Id, c.AddName,
+    c.ADDTIME, c.UpdateName, c.UpdateTime, c.StopTime, c.StopName, c.BeginTime, c.BeginName, c.DeleteName,
+    c.DeleteTime, c.TimeLiness
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from entryfees
+    where Fees_Id = #{feesId,jdbcType=INTEGER}
+  </select>
+  <!--显示所有-->
+  <select id="selectAllentryfees" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />,
+    <include refid="Base_Column_Register" />,
+    <include refid="Base_Column_Course" />
+    from entryfees en
+    inner join register r on en.Register_Id=r.Register_Id
+    inner join course c on en.Course_Id=c.Course_id
+    where en.TimeLiness=0 /*AND r.PayState=1*/
+    order by Fees_Id desc
+  </select>
+  <!--查询预缴费状态-->
+  <select id="selefeesType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />,
+    <include refid="Base_Column_Register" />,
+    <include refid="Base_Column_Course" />
+    from entryfees en
+    inner join register r on en.Register_Id=r.Register_Id
+    inner join course c on en.Course_Id=c.Course_id
+    where en.TimeLiness=0 AND en.Fees_Type=1 AND en.Accumulated!=0
+    order by Fees_Id desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from entryfees
+    where Fees_Id = #{feesId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="Fees_Id" keyProperty="feesId" parameterType="com.trkj.tsm.entity.Entryfees" useGeneratedKeys="true">
+    insert into entryfees (Register_Id, Course_Id, Fees_Receivable, 
+      Fees_Name, Fees_Type, Fees_Advance, 
+      Receipts, AddName, ADDTIME, 
+      UpdateName, UpdateTime, TimeLiness, 
+      Fees_State, ApprovalName, ApprovalTime, 
+      RevokeAppName, RevokeAppTime,Accumulated)
+    values (#{registerId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{feesReceivable,jdbcType=DECIMAL},
+      #{feesName,jdbcType=VARCHAR}, #{feesType,jdbcType=INTEGER}, #{feesAdvance,jdbcType=DECIMAL},
+      #{receipts,jdbcType=DECIMAL}, #{addname,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, 
+      #{updatename,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{timeliness,jdbcType=INTEGER}, 
+      #{feesState,jdbcType=INTEGER}, #{approvalname,jdbcType=VARCHAR}, #{approvaltime,jdbcType=TIMESTAMP}, 
+      #{revokeappname,jdbcType=VARCHAR}, #{revokeapptime,jdbcType=TIMESTAMP}, #{accumulated,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="Fees_Id" keyProperty="feesId" parameterType="com.trkj.tsm.entity.Entryfees" useGeneratedKeys="true">
+    insert into entryfees
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="registerId != null">
+        Register_Id,
+      </if>
+      <if test="courseId != null">
+        Course_Id,
+      </if>
+      <if test="feesReceivable != null">
+        Fees_Receivable,
+      </if>
+      <if test="feesName != null">
+        Fees_Name,
+      </if>
+      <if test="feesType != null">
+        Fees_Type,
+      </if>
+      <if test="feesAdvance != null">
+        Fees_Advance,
+      </if>
+      <if test="receipts != null">
+        Receipts,
+      </if>
+      <if test="addname != null">
+        AddName,
+      </if>
+      <if test="addtime != null">
+        ADDTIME,
+      </if>
+      <if test="updatename != null">
+        UpdateName,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+      <if test="timeliness != null">
+        TimeLiness,
+      </if>
+      <if test="feesState != null">
+        Fees_State,
+      </if>
+      <if test="approvalname != null">
+        ApprovalName,
+      </if>
+      <if test="approvaltime != null">
+        ApprovalTime,
+      </if>
+      <if test="revokeappname != null">
+        RevokeAppName,
+      </if>
+      <if test="revokeapptime != null">
+        RevokeAppTime,
+      </if>
+      <if test="accumulated != null">
+        Accumulated,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="registerId != null">
+        #{registerId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="feesReceivable != null">
+        #{feesReceivable,jdbcType=DECIMAL},
+      </if>
+      <if test="feesName != null">
+        #{feesName,jdbcType=VARCHAR},
+      </if>
+      <if test="feesType != null">
+        #{feesType,jdbcType=INTEGER},
+      </if>
+      <if test="feesAdvance != null">
+        #{feesAdvance,jdbcType=DECIMAL},
+      </if>
+      <if test="receipts != null">
+        #{receipts,jdbcType=DECIMAL},
+      </if>
+      <if test="addname != null">
+        #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        #{timeliness,jdbcType=INTEGER},
+      </if>
+      <if test="feesState != null">
+        #{feesState,jdbcType=INTEGER},
+      </if>
+      <if test="approvalname != null">
+        #{approvalname,jdbcType=VARCHAR},
+      </if>
+      <if test="approvaltime != null">
+        #{approvaltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="revokeappname != null">
+        #{revokeappname,jdbcType=VARCHAR},
+      </if>
+      <if test="revokeapptime != null">
+        #{revokeapptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accumulated != null">
+        #{accumulated,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.entity.Entryfees">
+    update entryfees
+    <set>
+      <if test="registerId != null">
+        Register_Id = #{registerId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        Course_Id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="feesReceivable != null">
+        Fees_Receivable = #{feesReceivable,jdbcType=DECIMAL},
+      </if>
+      <if test="feesName != null">
+        Fees_Name = #{feesName,jdbcType=VARCHAR},
+      </if>
+      <if test="feesType != null">
+        Fees_Type = #{feesType,jdbcType=INTEGER},
+      </if>
+      <if test="feesAdvance != null">
+        Fees_Advance = #{feesAdvance,jdbcType=DECIMAL},
+      </if>
+      <if test="receipts != null">
+        Receipts = #{receipts,jdbcType=DECIMAL},
+      </if>
+      <if test="addname != null">
+        AddName = #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        ADDTIME = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        UpdateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        TimeLiness = #{timeliness,jdbcType=INTEGER},
+      </if>
+      <if test="feesState != null">
+        Fees_State = #{feesState,jdbcType=INTEGER},
+      </if>
+      <if test="approvalname != null">
+        ApprovalName = #{approvalname,jdbcType=VARCHAR},
+      </if>
+      <if test="approvaltime != null">
+        ApprovalTime = #{approvaltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="revokeappname != null">
+        RevokeAppName = #{revokeappname,jdbcType=VARCHAR},
+      </if>
+      <if test="revokeapptime != null">
+        RevokeAppTime = #{revokeapptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accumulated != null">
+        Accumulated = #{accumulated,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where Fees_Id = #{feesId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.entity.Entryfees">
+    update entryfees
+    set Register_Id = #{registerId,jdbcType=INTEGER},
+      Course_Id = #{courseId,jdbcType=INTEGER},
+      Fees_Receivable = #{feesReceivable,jdbcType=DECIMAL},
+      Fees_Name = #{feesName,jdbcType=VARCHAR},
+      Fees_Type = #{feesType,jdbcType=INTEGER},
+      Fees_Advance = #{feesAdvance,jdbcType=DECIMAL},
+      Receipts = #{receipts,jdbcType=DECIMAL},
+      AddName = #{addname,jdbcType=VARCHAR},
+      ADDTIME = #{addtime,jdbcType=TIMESTAMP},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER},
+      Fees_State = #{feesState,jdbcType=INTEGER},
+      ApprovalName = #{approvalname,jdbcType=VARCHAR},
+      ApprovalTime = #{approvaltime,jdbcType=TIMESTAMP},
+      RevokeAppName = #{revokeappname,jdbcType=VARCHAR},
+      RevokeAppTime = #{revokeapptime,jdbcType=TIMESTAMP},
+      Accumulated = #{accumulated,jdbcType=DECIMAL}
+    where Fees_Id = #{feesId,jdbcType=INTEGER}
+  </update>
+  <update id="upfeesState" parameterType="com.trkj.tsm.entity.Entryfees">
+     update entryfees
+    set Fees_State = #{feesState,jdbcType=INTEGER}
+    where Fees_Id = #{feesId,jdbcType=INTEGER}
+  </update>
+  <update id="upaccumulated" parameterType="com.trkj.tsm.entity.Entryfees">
+     update entryfees
+    set Accumulated = #{accumulated,jdbcType=DECIMAL}
+    where Fees_Id = #{feesId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.CourseDetailsDao">
+    <resultMap type="com.trkj.tsm.vo.CourseDetailsVo" id="CoursedetailsMap">
+        <id property="coursedetailsId" column="CourseDetails_Id" jdbcType="INTEGER"/>
+        <result property="coursedetailsName" column="CourseDetails_Name" jdbcType="VARCHAR"/>
+        <result property="coursesequence" column="CourseSequence" jdbcType="INTEGER"/>
+        <result property="addname" column="AddName" jdbcType="VARCHAR"/>
+        <result property="addtime" column="ADDTIME" jdbcType="TIMESTAMP"/>
+        <result property="updatename" column="UpdateName" jdbcType="VARCHAR"/>
+        <result property="updatetime" column="UpdateTime" jdbcType="TIMESTAMP"/>
+        <result property="deletename" column="DeleteName" jdbcType="VARCHAR"/>
+        <result property="deletetime" column="DeleteTime" jdbcType="TIMESTAMP"/>
+        <result property="timeliness" column="TimeLiness" jdbcType="INTEGER"/>
+        <result property="courseId" column="Course_Id" jdbcType="INTEGER"/>
+        <association property="classesVo" javaType="com.trkj.tsm.vo.ClassesVo">
+            <id property="classesId" column="Classes_Id" jdbcType="INTEGER"/>
+            <result property="classesName" column="Classes_Name" jdbcType="VARCHAR"/>
+            <result property="classesOpen" column="Classes_Open" jdbcType="INTEGER"/>
+            <result property="starteddate" column="StartedDate" jdbcType="TIMESTAMP"/>
+            <result property="enddate" column="EndDate" jdbcType="TIMESTAMP"/>
+            <result property="lastdate" column="LastDate" jdbcType="TIMESTAMP"/>
+            <result property="manylessons" column="ManyLessons" jdbcType="INTEGER"/>
+            <result property="addname" column="AddName" jdbcType="VARCHAR"/>
+            <result property="addtime" column="ADDTIME" jdbcType="TIMESTAMP"/>
+            <result property="updatename" column="UpdateName" jdbcType="VARCHAR"/>
+            <result property="updatetime" column="UpdateTime" jdbcType="TIMESTAMP"/>
+            <result property="deletename" column="DeleteName" jdbcType="VARCHAR"/>
+            <result property="deletetime" column="DeleteTime" jdbcType="TIMESTAMP"/>
+            <result property="timeliness" column="TimeLiness" jdbcType="INTEGER"/>
+            <result property="courseId" column="Course_Id" jdbcType="INTEGER"/>
+            <result property="empId" column="Emp_Id" jdbcType="INTEGER"/>
+            <result property="teacherId" column="Teacher_Id" jdbcType="INTEGER"/>
+            <result property="coursedetailsId" column="CourseDetails_Id" jdbcType="INTEGER"/>
+            <collection property="emp" ofType="com.trkj.tsm.vo.EmpVo">
+                <id property="empId" column="Emp_Id" jdbcType="INTEGER"/>
+                <result property="jobnumber" column="JobNumber" jdbcType="VARCHAR"/>
+                <result property="empName" column="Emp_Name" jdbcType="VARCHAR"/>
+                <result property="empSex" column="Emp_Sex" jdbcType="VARCHAR"/>
+                <result property="empPhone" column="Emp_Phone" jdbcType="VARCHAR"/>
+                <result property="eMail" column="E_mail" jdbcType="VARCHAR"/>
+                <result property="birthday" column="Birthday" jdbcType="TIMESTAMP"/>
+                <result property="remarks" column="Remarks" jdbcType="VARCHAR"/>
+                <result property="address" column="Address" jdbcType="VARCHAR"/>
+                <result property="password" column="Password" jdbcType="VARCHAR"/>
+                <result property="education" column="Education" jdbcType="VARCHAR"/>
+                <result property="graduate" column="Graduate" jdbcType="VARCHAR"/>
+                <result property="addname" column="AddName" jdbcType="VARCHAR"/>
+                <result property="addtime" column="ADDTIME" jdbcType="TIMESTAMP"/>
+                <result property="updatename" column="UpdateName" jdbcType="VARCHAR"/>
+                <result property="updatetime" column="UpdateTime" jdbcType="TIMESTAMP"/>
+                <result property="deptId" column="Dept_Id" jdbcType="INTEGER"/>
+            </collection>
+            <collection property="emp2" ofType="com.trkj.tsm.vo.EmpVo">
+                <id property="empId" column="Emp_Id" jdbcType="INTEGER"/>
+                <result property="jobnumber" column="JobNumber" jdbcType="VARCHAR"/>
+                <result property="empName" column="hzy" jdbcType="VARCHAR"/>
+                <result property="empSex" column="Emp_Sex" jdbcType="VARCHAR"/>
+                <result property="empPhone" column="Emp_Phone" jdbcType="VARCHAR"/>
+                <result property="eMail" column="E_mail" jdbcType="VARCHAR"/>
+                <result property="birthday" column="Birthday" jdbcType="TIMESTAMP"/>
+                <result property="remarks" column="Remarks" jdbcType="VARCHAR"/>
+                <result property="address" column="Address" jdbcType="VARCHAR"/>
+                <result property="password" column="Password" jdbcType="VARCHAR"/>
+                <result property="education" column="Education" jdbcType="VARCHAR"/>
+                <result property="graduate" column="Graduate" jdbcType="VARCHAR"/>
+                <result property="addname" column="AddName" jdbcType="VARCHAR"/>
+                <result property="addtime" column="ADDTIME" jdbcType="TIMESTAMP"/>
+                <result property="updatename" column="UpdateName" jdbcType="VARCHAR"/>
+                <result property="updatetime" column="UpdateTime" jdbcType="TIMESTAMP"/>
+                <result property="deptId" column="Dept_Id" jdbcType="INTEGER"/>
+            </collection>
+        </association>
+        <association property="courseVo" javaType="com.trkj.tsm.vo.CourseVo">
+            <id property="courseId" column="Course_Id" jdbcType="INTEGER"/>
+            <result property="courseName" column="Course_Name" jdbcType="VARCHAR"/>
+            <result property="courseState" column="Course_State" jdbcType="INTEGER"/>
+            <result property="classhours" column="Classhours" jdbcType="INTEGER"/>
+            <result property="courseMoney" column="Course_Money" jdbcType="NUMERIC"/>
+            <result property="addname" column="AddName" jdbcType="VARCHAR"/>
+            <result property="addtime" column="ADDTIME" jdbcType="TIMESTAMP"/>
+            <result property="updatename" column="UpdateName" jdbcType="VARCHAR"/>
+            <result property="updatetime" column="UpdateTime" jdbcType="TIMESTAMP"/>
+            <result property="stopname" column="StopName" jdbcType="VARCHAR"/>
+            <result property="stoptime" column="StopTime" jdbcType="TIMESTAMP"/>
+            <result property="beginname" column="BeginName" jdbcType="VARCHAR"/>
+            <result property="begintime" column="BeginTime" jdbcType="TIMESTAMP"/>
+            <result property="deletename" column="DeleteName" jdbcType="VARCHAR"/>
+            <result property="deletetime" column="DeleteTime" jdbcType="TIMESTAMP"/>
+            <result property="timeliness" column="TimeLiness" jdbcType="INTEGER"/>
+            <result property="classtypeId" column="ClassType_Id" jdbcType="INTEGER"/>
+            <collection property="classtype" ofType="com.trkj.tsm.vo.ClasstypeVo">
+                <id property="classtypeId" column="ClassType_Id" jdbcType="INTEGER"/>
+                <result property="classtypeName" column="ClassType_Name" jdbcType="VARCHAR"/>
+                <result property="addname" column="AddName" jdbcType="VARCHAR"/>
+                <result property="addtime" column="AddTime" jdbcType="TIMESTAMP"/>
+                <result property="updatename" column="UpdateName" jdbcType="VARCHAR"/>
+                <result property="updatetime" column="UpdateTime" jdbcType="TIMESTAMP"/>
+                <result property="deletename" column="DeleteName" jdbcType="VARCHAR"/>
+                <result property="deletetime" column="DeleteTime" jdbcType="TIMESTAMP"/>
+                <result property="timeliness" column="TimeLiness" jdbcType="INTEGER"/>
+            </collection>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      cd.CourseDetails_Id, cd.CourseDetails_Name, cd.CourseSequence, cd.AddName, cd.ADDTIME, cd.UpdateName,
+       cd.UpdateTime, cd.DeleteName, cd.DeleteTime, cd.TimeLiness, cd.Course_Id
+    </sql>
+
+    <!--查询所有-->
+    <select id="selectAllCourseDetails" resultMap="CoursedetailsMap">
+        select
+        <include refid="Base_Column_List" />,c.Course_Money,c.Classhours,
+        c.Course_Name,c.Course_Id,c.ClassType_Id
+        from tr01904.coursedetails cd
+        inner join course c on cd.Course_Id = c.Course_Id
+        where cd.TimeLiness = 0 order by cd.CourseDetails_Id DESC
+    </select>
+
+    <select id="selectAllCourseDetails3" resultMap="CoursedetailsMap">
+        select
+        <include refid="Base_Column_List" />,c.Course_Money,c.Classhours,
+        c.Course_Name,c.Course_Id,c.ClassType_Id
+        from tr01904.coursedetails cd
+        inner join course c on cd.Course_Id = c.Course_Id
+        where cd.TimeLiness = 0 and cd.Course_Id = #{Course_Id}
+    </select>
+
+    <!--查询所有[不分页]-->
+    <select id="selectAllCourseDetails2" resultMap="CoursedetailsMap">
+        select
+        <include refid="Base_Column_List" />,e1.Emp_Name,e2.Emp_Name hzy,c.Course_Money,c.Classhours,
+        c.Course_Name,c.Course_Id,c.ClassType_Id,ct.ClassType_Name,cl.Classes_Name,cl.Classes_Id,
+        cl.StartedDate,cl.EndDate,cl.LastDate,cl.ManyLessons,cl.Emp_Id,cl.Teacher_Id
+        from tr01904.coursedetails cd
+        inner join classes cl on cd.CourseDetails_Id = cl.CourseDetails_Id
+        inner join course c on cd.Course_Id = c.Course_Id
+        inner join classtype ct on c.ClassType_Id = ct.ClassType_Id
+        inner join emp e1 on cl.Emp_Id=e1.Emp_Id
+        inner join emp e2 on cl.Teacher_Id=e2.Emp_Id
+        where cd.TimeLiness = 0
+    </select>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CoursedetailsMap">
+        select
+          CourseDetails_Id, CourseDetails_Name, CourseSequence, AddName, ADDTIME, UpdateName, UpdateTime, DeleteName, DeleteTime, TimeLiness, Course_Id
+        from tr01904.coursedetails
+        where CourseDetails_Id = #{coursedetailsId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="CoursedetailsMap">
+        select
+          CourseDetails_Id, CourseDetails_Name, CourseSequence, AddName, ADDTIME, UpdateName, UpdateTime, DeleteName, DeleteTime, TimeLiness, Course_Id
+        from tr01904.coursedetails
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="CoursedetailsMap">
+        select
+        CourseDetails_Id, CourseDetails_Name, CourseSequence, AddName, ADDTIME, UpdateName, UpdateTime, DeleteName,
+        DeleteTime, TimeLiness, Course_Id
+        from tr01904.coursedetails
+        <where>
+            <if test="coursedetailsId != null">
+                and CourseDetails_Id = #{coursedetailsId}
+            </if>
+            <if test="coursedetailsName != null and coursedetailsName != ''">
+                and CourseDetails_Name = #{coursedetailsName}
+            </if>
+            <if test="coursesequence != null">
+                and CourseSequence = #{coursesequence}
+            </if>
+            <if test="addname != null and addname != ''">
+                and AddName = #{addname}
+            </if>
+            <if test="addtime != null">
+                and ADDTIME = #{addtime}
+            </if>
+            <if test="updatename != null and updatename != ''">
+                and UpdateName = #{updatename}
+            </if>
+            <if test="updatetime != null">
+                and UpdateTime = #{updatetime}
+            </if>
+            <if test="deletename != null and deletename != ''">
+                and DeleteName = #{deletename}
+            </if>
+            <if test="deletetime != null">
+                and DeleteTime = #{deletetime}
+            </if>
+            <if test="timeliness != null">
+                and TimeLiness = #{timeliness}
+            </if>
+            <if test="courseId != null">
+                and Course_Id = #{courseId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="coursedetailsId" useGeneratedKeys="true">
+        insert into tr01904.coursedetails(CourseDetails_Name, CourseSequence, AddName, ADDTIME, UpdateName, UpdateTime, DeleteName, DeleteTime, TimeLiness, Course_Id)
+        values (#{coursedetailsName}, #{coursesequence}, #{addname}, #{addtime}, #{updatename}, #{updatetime}, #{deletename}, #{deletetime}, #{timeliness}, #{courseId})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="coursedetailsId" useGeneratedKeys="true">
+        insert into tr01904.coursedetails(CourseDetails_Name, CourseSequence, AddName, ADDTIME, UpdateName, UpdateTime,
+        DeleteName, DeleteTime, TimeLiness, Course_Id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.coursedetailsName}, #{entity.coursesequence}, #{entity.addname}, #{entity.addtime},
+            #{entity.updatename}, #{entity.updatetime}, #{entity.deletename}, #{entity.deletetime},
+            #{entity.timeliness}, #{entity.courseId})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="coursedetailsId" useGeneratedKeys="true">
+        insert into tr01904.coursedetails(CourseDetails_Name, CourseSequence, AddName, ADDTIME, UpdateName, UpdateTime,
+        DeleteName, DeleteTime, TimeLiness, Course_Id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.coursedetailsName}, #{entity.coursesequence}, #{entity.addname}, #{entity.addtime},
+            #{entity.updatename}, #{entity.updatetime}, #{entity.deletename}, #{entity.deletetime},
+            #{entity.timeliness}, #{entity.courseId})
+        </foreach>
+        on duplicate key update
+        CourseDetails_Name = values(CourseDetails_Name) , CourseSequence = values(CourseSequence) , AddName =
+        values(AddName) , ADDTIME = values(ADDTIME) , UpdateName = values(UpdateName) , UpdateTime = values(UpdateTime)
+        , DeleteName = values(DeleteName) , DeleteTime = values(DeleteTime) , TimeLiness = values(TimeLiness) ,
+        Course_Id = values(Course_Id)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="updateCourseDetailsKey">
+        update tr01904.coursedetails
+        <set>
+            <if test="coursedetailsName != null and coursedetailsName != ''">
+                CourseDetails_Name = #{coursedetailsName},
+            </if>
+            <if test="coursesequence != null">
+                CourseSequence = #{coursesequence},
+            </if>
+            <if test="addname != null and addname != ''">
+                AddName = #{addname},
+            </if>
+            <if test="addtime != null">
+                ADDTIME = #{addtime},
+            </if>
+            <if test="updatename != null and updatename != ''">
+                UpdateName = #{updatename},
+            </if>
+            <if test="updatetime != null">
+                UpdateTime = #{updatetime},
+            </if>
+            <if test="deletename != null and deletename != ''">
+                DeleteName = #{deletename},
+            </if>
+            <if test="deletetime != null">
+                DeleteTime = #{deletetime},
+            </if>
+            <if test="timeliness != null">
+                TimeLiness = #{timeliness},
+            </if>
+            <if test="courseId != null">
+                Course_Id = #{courseId},
+            </if>
+        </set>
+        where CourseDetails_Id = #{coursedetailsId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from tr01904.coursedetails where CourseDetails_Id = #{coursedetailsId}
+    </delete>
+
+    <!--修改删除人与时效性-->
+    <update id="deleteByCourseDetails" parameterType="com.trkj.tsm.entity.CourseDetails">
+        update tr01904.coursedetails
+        set
+          DeleteName = #{deletename},
+          DeleteTime = #{deletetime},
+          TimeLiness = #{timeliness}
+        where CourseDetails_Id = #{coursedetailsId}
+    </update>
+
+    <select id="selectCourseDetailsDeleteOne" resultType="integer" parameterType="integer">
+        SELECT COUNT(Course_Id) FROM coursedetails WHERE Course_Id= #{courseId} AND TimeLiness = 0
+    </select>
+
+    <!--排课相关（胡志远）-->
+    <select id="selectArrangeInfo" resultMap="CoursedetailsMap">
+        select <include refid="Base_Column_List" />
+        from coursedetails cd
+        where timeliness=0 and coursesequence>=#{param2} and Course_Id=#{param1}
+        order by coursesequence asc
+    </select>
+</mapper>
+

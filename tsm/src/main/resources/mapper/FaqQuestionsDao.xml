@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.FaqQuestionsDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.entity.FaqQuestions">
+    <id column="FAQ_id" jdbcType="INTEGER" property="faqId" />
+    <result column="Problem" jdbcType="VARCHAR" property="problem" />
+    <result column="Answer" jdbcType="VARCHAR" property="answer" />
+    <result column="AddName" jdbcType="VARCHAR" property="addname" />
+    <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+    <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+    <result column="ClickCount" jdbcType="INTEGER" property="clickcount" />
+    <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    FAQ_id, Problem, Answer, AddName, ADDTIME, UpdateName, UpdateTime, DeleteName, DeleteTime, 
+    ClickCount, TimeLiness
+  </sql>
+  <select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from faq_questions
+
+  </select>
+  <select id="selectAll1" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from faq_questions
+    and b.Problem like CONCAT('%',#{problem},'%')
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from faq_questions
+    where FAQ_id = #{faqId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="FAQ_id" keyProperty="faqId" parameterType="com.trkj.tsm.vo.FaqQuestions" useGeneratedKeys="true">
+    insert into faq_questions (Problem, Answer, AddName, 
+      ADDTIME, UpdateName, UpdateTime, 
+      DeleteName, DeleteTime, ClickCount, 
+      TimeLiness)
+    values (#{problem,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR}, #{addname,jdbcType=VARCHAR}, 
+      #{addtime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{deletename,jdbcType=VARCHAR}, #{deletetime,jdbcType=TIMESTAMP}, #{clickcount,jdbcType=INTEGER}, 
+      #{timeliness,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="FAQ_id" keyProperty="faqId" parameterType="com.trkj.tsm.vo.FaqQuestions" useGeneratedKeys="true">
+    insert into faq_questions
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="problem != null">
+        Problem,
+      </if>
+      <if test="answer != null">
+        Answer,
+      </if>
+      <if test="addname != null">
+        AddName,
+      </if>
+      <if test="addtime != null">
+        ADDTIME,
+      </if>
+      <if test="updatename != null">
+        UpdateName,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+      <if test="deletename != null">
+        DeleteName,
+      </if>
+      <if test="deletetime != null">
+        DeleteTime,
+      </if>
+      <if test="clickcount != null">
+        ClickCount,
+      </if>
+      <if test="timeliness != null">
+        TimeLiness,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="problem != null">
+        #{problem,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null">
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="addname != null">
+        #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clickcount != null">
+        #{clickcount,jdbcType=INTEGER},
+      </if>
+      <if test="timeliness != null">
+        #{timeliness,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.vo.FaqQuestions">
+    update faq_questions
+    <set>
+      <if test="problem != null">
+        Problem = #{problem,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null">
+        Answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="addname != null">
+        AddName = #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        ADDTIME = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        UpdateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        DeleteName = #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clickcount != null">
+        ClickCount = #{clickcount,jdbcType=INTEGER},
+      </if>
+      <if test="timeliness != null">
+        TimeLiness = #{timeliness,jdbcType=INTEGER},
+      </if>
+    </set>
+    where FAQ_id = #{faqId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.vo.FaqQuestions">
+    update faq_questions
+    set Problem = #{problem,jdbcType=VARCHAR},
+      Answer = #{answer,jdbcType=VARCHAR},
+      AddName = #{addname,jdbcType=VARCHAR},
+      ADDTIME = #{addtime,jdbcType=TIMESTAMP},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      ClickCount = #{clickcount,jdbcType=INTEGER},
+      TimeLiness = #{timeliness,jdbcType=INTEGER}
+    where FAQ_id = #{faqId,jdbcType=INTEGER}
+  </update>
+</mapper>

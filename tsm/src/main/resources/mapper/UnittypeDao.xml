@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.UnittypeDao">
+    <resultMap id="BaseResultMap" type="com.trkj.tsm.entity.Unittype">
+        <id column="UnitType_Id" jdbcType="INTEGER" property="unittypeId"/>
+        <result column="UnitTyoe_Name" jdbcType="VARCHAR" property="unittypeName"/>
+        <result column="Addname" jdbcType="VARCHAR" property="addname"/>
+        <result column="AddTime" jdbcType="TIMESTAMP" property="addtime"/>
+        <result column="UpdateName" jdbcType="VARCHAR" property="updatename"/>
+        <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime"/>
+        <result column="DeleteName" jdbcType="VARCHAR" property="deletename"/>
+        <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime"/>
+        <result column="TimeLiness" jdbcType="INTEGER" property="timeliness"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    UnitType_Id, UnitTyoe_Name, Addname, AddTime, UpdateName, UpdateTime, DeleteName,
+    DeleteTime, TimeLiness
+  </sql>
+    <select id="selectUnitTypeByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from unittype
+        where TimeLiness = 0
+        and UnitTyoe_Name like CONCAT('%',#{unittyoeName,jdbcType=VARCHAR},'%')
+    </select>
+    <select id="selectAllUnitType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from unittype
+        where TimeLiness = 0
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from unittype
+        where UnitType_Id = #{unittypeId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from unittype
+    where UnitType_Id = #{unittypeId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insertUnitType" keyColumn="UnitType_Id" keyProperty="unittypeId" parameterType="com.trkj.tsm.entity.Unittype"
+            useGeneratedKeys="true">
+    insert into unittype (UnitTyoe_Name, Addname, AddTime)
+    values (#{unittypeName,jdbcType=VARCHAR}, #{addname,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insert" keyColumn="UnitType_Id" keyProperty="unittypeId" parameterType="com.trkj.tsm.entity.Unittype"
+            useGeneratedKeys="true">
+    insert into unittype (UnitTyoe_Name, Addname, AddTime,
+      UpdateName, UpdateTime, DeleteName, 
+      DeleteTime, TimeLiness)
+    values (#{unittypeName,jdbcType=VARCHAR}, #{addname,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP},
+      #{updatename,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{deletename,jdbcType=VARCHAR}, 
+      #{deletetime,jdbcType=TIMESTAMP}, #{timeliness,jdbcType=INTEGER})
+  </insert>
+    <insert id="insertSelective" keyColumn="UnitType_Id" keyProperty="unittypeId"
+            parameterType="com.trkj.tsm.entity.Unittype" useGeneratedKeys="true">
+        insert into unittype
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="unittypeName != null">
+                UnitTyoe_Name,
+            </if>
+            <if test="addname != null">
+                Addname,
+            </if>
+            <if test="addtime != null">
+                AddTime,
+            </if>
+            <if test="updatename != null">
+                UpdateName,
+            </if>
+            <if test="updatetime != null">
+                UpdateTime,
+            </if>
+            <if test="deletename != null">
+                DeleteName,
+            </if>
+            <if test="deletetime != null">
+                DeleteTime,
+            </if>
+            <if test="timeliness != null">
+                TimeLiness,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="unittypeName != null">
+                #{unittypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="addname != null">
+                #{addname,jdbcType=VARCHAR},
+            </if>
+            <if test="addtime != null">
+                #{addtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatename != null">
+                #{updatename,jdbcType=VARCHAR},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deletename != null">
+                #{deletename,jdbcType=VARCHAR},
+            </if>
+            <if test="deletetime != null">
+                #{deletetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="timeliness != null">
+                #{timeliness,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.entity.Unittype">
+        update unittype
+        <set>
+            <if test="unittypeName != null">
+                UnitTyoe_Name = #{unittypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="addname != null">
+                Addname = #{addname,jdbcType=VARCHAR},
+            </if>
+            <if test="addtime != null">
+                AddTime = #{addtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatename != null">
+                UpdateName = #{updatename,jdbcType=VARCHAR},
+            </if>
+            <if test="updatetime != null">
+                UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deletename != null">
+                DeleteName = #{deletename,jdbcType=VARCHAR},
+            </if>
+            <if test="deletetime != null">
+                DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="timeliness != null">
+                TimeLiness = #{timeliness,jdbcType=INTEGER},
+            </if>
+        </set>
+        where UnitType_Id = #{unittypeId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.entity.Unittype">
+    update unittype
+    set UnitTyoe_Name = #{unittypeName,jdbcType=VARCHAR},
+      Addname = #{addname,jdbcType=VARCHAR},
+      AddTime = #{addtime,jdbcType=TIMESTAMP},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER}
+    where UnitType_Id = #{unittypeId,jdbcType=INTEGER}
+    </update>
+    <update id="updateNameById" parameterType="com.trkj.tsm.entity.Unittype">
+    update unittype
+    set UnitTyoe_Name = #{unittypeName,jdbcType=VARCHAR},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where UnitType_Id = #{unittypeId,jdbcType=INTEGER}
+    </update>
+    <update id="deleteById" parameterType="com.trkj.tsm.entity.Unittype">
+    update unittype
+    set DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER}
+    where UnitType_Id = #{unittypeId,jdbcType=INTEGER}
+    </update>
+</mapper>

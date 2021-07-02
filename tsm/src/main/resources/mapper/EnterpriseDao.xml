@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.EnterpriseDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.entity.Enterprise">
+    <id column="Enterprise_Id" jdbcType="INTEGER" property="enterpriseId" />
+    <result column="Enterprise_Name" jdbcType="VARCHAR" property="enterpriseName" />
+    <result column="Enclosure_Brand" jdbcType="VARCHAR" property="enclosureBrand" />
+    <result column="Enterprise_ShortName" jdbcType="VARCHAR" property="enterpriseShortname" />
+    <result column="Enterprise_EnglishName" jdbcType="VARCHAR" property="enterpriseEnglishname" />
+    <result column="Industry" jdbcType="VARCHAR" property="industry" />
+    <result column="CompanyType" jdbcType="VARCHAR" property="companytype" />
+    <result column="PostalCode" jdbcType="INTEGER" property="postalcode" />
+    <result column="CompanyAddress" jdbcType="VARCHAR" property="companyaddress" />
+    <result column="CompanyPhone" jdbcType="INTEGER" property="companyphone" />
+    <result column="FaxPhone" jdbcType="VARCHAR" property="faxphone" />
+    <result column="ComanyWeb" jdbcType="VARCHAR" property="comanyweb" />
+    <result column="E_mail" jdbcType="VARCHAR" property="eMail" />
+    <result column="Representative" jdbcType="VARCHAR" property="representative" />
+    <result column="RegisterTime" jdbcType="TIMESTAMP" property="registertime" />
+    <result column="RegisterMoney" jdbcType="DECIMAL" property="registermoney" />
+    <result column="EmpNumber" jdbcType="INTEGER" property="empnumber" />
+    <result column="Deposit_Bank" jdbcType="VARCHAR" property="depositBank" />
+    <result column="Bank_Number" jdbcType="VARCHAR" property="bankNumber" />
+    <result column="Enterprise_Brief" jdbcType="VARCHAR" property="enterpriseBrief" />
+    <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Enterprise_Id, Enterprise_Name, Enclosure_Brand, Enterprise_ShortName, Enterprise_EnglishName, 
+    Industry, CompanyType, PostalCode, CompanyAddress, CompanyPhone, FaxPhone, ComanyWeb, 
+    E_mail, Representative, RegisterTime, RegisterMoney, EmpNumber, Deposit_Bank, Bank_Number, 
+    Enterprise_Brief, UpdateName, UpdateTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from enterprise
+    where Enterprise_Id = #{enterpriseId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllEnterprise" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from enterprise
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from enterprise
+    where Enterprise_Id = #{enterpriseId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="Enterprise_Id" keyProperty="enterpriseId" parameterType="com.trkj.tsm.entity.Enterprise" useGeneratedKeys="true">
+    insert into enterprise (Enterprise_Name, Enclosure_Brand, Enterprise_ShortName, 
+      Enterprise_EnglishName, Industry, CompanyType, 
+      PostalCode, CompanyAddress, CompanyPhone, 
+      FaxPhone, ComanyWeb, E_mail, 
+      Representative, RegisterTime, RegisterMoney, 
+      EmpNumber, Deposit_Bank, Bank_Number, 
+      Enterprise_Brief, UpdateName, UpdateTime
+      )
+    values (#{enterpriseName,jdbcType=VARCHAR}, #{enclosureBrand,jdbcType=VARCHAR}, #{enterpriseShortname,jdbcType=VARCHAR}, 
+      #{enterpriseEnglishname,jdbcType=VARCHAR}, #{industry,jdbcType=VARCHAR}, #{companytype,jdbcType=VARCHAR}, 
+      #{postalcode,jdbcType=INTEGER}, #{companyaddress,jdbcType=VARCHAR}, #{companyphone,jdbcType=INTEGER}, 
+      #{faxphone,jdbcType=VARCHAR}, #{comanyweb,jdbcType=VARCHAR}, #{eMail,jdbcType=VARCHAR}, 
+      #{representative,jdbcType=VARCHAR}, #{registertime,jdbcType=TIMESTAMP}, #{registermoney,jdbcType=DECIMAL}, 
+      #{empnumber,jdbcType=INTEGER}, #{depositBank,jdbcType=VARCHAR}, #{bankNumber,jdbcType=VARCHAR}, 
+      #{enterpriseBrief,jdbcType=VARCHAR}, #{updatename,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="Enterprise_Id" keyProperty="enterpriseId" parameterType="com.trkj.tsm.entity.Enterprise" useGeneratedKeys="true">
+    insert into enterprise
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="enterpriseName != null">
+        Enterprise_Name,
+      </if>
+      <if test="enclosureBrand != null">
+        Enclosure_Brand,
+      </if>
+      <if test="enterpriseShortname != null">
+        Enterprise_ShortName,
+      </if>
+      <if test="enterpriseEnglishname != null">
+        Enterprise_EnglishName,
+      </if>
+      <if test="industry != null">
+        Industry,
+      </if>
+      <if test="companytype != null">
+        CompanyType,
+      </if>
+      <if test="postalcode != null">
+        PostalCode,
+      </if>
+      <if test="companyaddress != null">
+        CompanyAddress,
+      </if>
+      <if test="companyphone != null">
+        CompanyPhone,
+      </if>
+      <if test="faxphone != null">
+        FaxPhone,
+      </if>
+      <if test="comanyweb != null">
+        ComanyWeb,
+      </if>
+      <if test="eMail != null">
+        E_mail,
+      </if>
+      <if test="representative != null">
+        Representative,
+      </if>
+      <if test="registertime != null">
+        RegisterTime,
+      </if>
+      <if test="registermoney != null">
+        RegisterMoney,
+      </if>
+      <if test="empnumber != null">
+        EmpNumber,
+      </if>
+      <if test="depositBank != null">
+        Deposit_Bank,
+      </if>
+      <if test="bankNumber != null">
+        Bank_Number,
+      </if>
+      <if test="enterpriseBrief != null">
+        Enterprise_Brief,
+      </if>
+      <if test="updatename != null">
+        UpdateName,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="enterpriseName != null">
+        #{enterpriseName,jdbcType=VARCHAR},
+      </if>
+      <if test="enclosureBrand != null">
+        #{enclosureBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseShortname != null">
+        #{enterpriseShortname,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseEnglishname != null">
+        #{enterpriseEnglishname,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null">
+        #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="companytype != null">
+        #{companytype,jdbcType=VARCHAR},
+      </if>
+      <if test="postalcode != null">
+        #{postalcode,jdbcType=INTEGER},
+      </if>
+      <if test="companyaddress != null">
+        #{companyaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="companyphone != null">
+        #{companyphone,jdbcType=INTEGER},
+      </if>
+      <if test="faxphone != null">
+        #{faxphone,jdbcType=VARCHAR},
+      </if>
+      <if test="comanyweb != null">
+        #{comanyweb,jdbcType=VARCHAR},
+      </if>
+      <if test="eMail != null">
+        #{eMail,jdbcType=VARCHAR},
+      </if>
+      <if test="representative != null">
+        #{representative,jdbcType=VARCHAR},
+      </if>
+      <if test="registertime != null">
+        #{registertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registermoney != null">
+        #{registermoney,jdbcType=DECIMAL},
+      </if>
+      <if test="empnumber != null">
+        #{empnumber,jdbcType=INTEGER},
+      </if>
+      <if test="depositBank != null">
+        #{depositBank,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNumber != null">
+        #{bankNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseBrief != null">
+        #{enterpriseBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.entity.Enterprise">
+    update enterprise
+    <set>
+      <if test="enterpriseName != null">
+        Enterprise_Name = #{enterpriseName,jdbcType=VARCHAR},
+      </if>
+      <if test="enclosureBrand != null">
+        Enclosure_Brand = #{enclosureBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseShortname != null">
+        Enterprise_ShortName = #{enterpriseShortname,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseEnglishname != null">
+        Enterprise_EnglishName = #{enterpriseEnglishname,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null">
+        Industry = #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="companytype != null">
+        CompanyType = #{companytype,jdbcType=VARCHAR},
+      </if>
+      <if test="postalcode != null">
+        PostalCode = #{postalcode,jdbcType=INTEGER},
+      </if>
+      <if test="companyaddress != null">
+        CompanyAddress = #{companyaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="companyphone != null">
+        CompanyPhone = #{companyphone,jdbcType=INTEGER},
+      </if>
+      <if test="faxphone != null">
+        FaxPhone = #{faxphone,jdbcType=VARCHAR},
+      </if>
+      <if test="comanyweb != null">
+        ComanyWeb = #{comanyweb,jdbcType=VARCHAR},
+      </if>
+      <if test="eMail != null">
+        E_mail = #{eMail,jdbcType=VARCHAR},
+      </if>
+      <if test="representative != null">
+        Representative = #{representative,jdbcType=VARCHAR},
+      </if>
+      <if test="registertime != null">
+        RegisterTime = #{registertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registermoney != null">
+        RegisterMoney = #{registermoney,jdbcType=DECIMAL},
+      </if>
+      <if test="empnumber != null">
+        EmpNumber = #{empnumber,jdbcType=INTEGER},
+      </if>
+      <if test="depositBank != null">
+        Deposit_Bank = #{depositBank,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNumber != null">
+        Bank_Number = #{bankNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseBrief != null">
+        Enterprise_Brief = #{enterpriseBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="updatename != null">
+        UpdateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Enterprise_Id = #{enterpriseId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.entity.Enterprise">
+    update enterprise
+    set Enterprise_Name = #{enterpriseName,jdbcType=VARCHAR},
+      Enclosure_Brand = #{enclosureBrand,jdbcType=VARCHAR},
+      Enterprise_ShortName = #{enterpriseShortname,jdbcType=VARCHAR},
+      Enterprise_EnglishName = #{enterpriseEnglishname,jdbcType=VARCHAR},
+      Industry = #{industry,jdbcType=VARCHAR},
+      CompanyType = #{companytype,jdbcType=VARCHAR},
+      PostalCode = #{postalcode,jdbcType=INTEGER},
+      CompanyAddress = #{companyaddress,jdbcType=VARCHAR},
+      CompanyPhone = #{companyphone,jdbcType=INTEGER},
+      FaxPhone = #{faxphone,jdbcType=VARCHAR},
+      ComanyWeb = #{comanyweb,jdbcType=VARCHAR},
+      E_mail = #{eMail,jdbcType=VARCHAR},
+      Representative = #{representative,jdbcType=VARCHAR},
+      RegisterTime = #{registertime,jdbcType=TIMESTAMP},
+      RegisterMoney = #{registermoney,jdbcType=DECIMAL},
+      EmpNumber = #{empnumber,jdbcType=INTEGER},
+      Deposit_Bank = #{depositBank,jdbcType=VARCHAR},
+      Bank_Number = #{bankNumber,jdbcType=VARCHAR},
+      Enterprise_Brief = #{enterpriseBrief,jdbcType=VARCHAR},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where Enterprise_Id = #{enterpriseId,jdbcType=INTEGER}
+  </update>
+</mapper>

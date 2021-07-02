@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.InterviewDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.entity.Interview">
+    <id column="Interview_Id" jdbcType="INTEGER" property="interviewId" />
+    <result column="Classes_Id" jdbcType="INTEGER" property="classesId" />
+    <result column="Student_Id" jdbcType="INTEGER" property="studentId" />
+    <result column="Interview_Time" jdbcType="TIMESTAMP" property="interviewTime" />
+    <result column="InterviewName" jdbcType="VARCHAR" property="interviewname" />
+    <result column="Theme" jdbcType="VARCHAR" property="theme" />
+    <result column="Progress" jdbcType="VARCHAR" property="progress" />
+    <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+    <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+    <result column="AddName" jdbcType="VARCHAR" property="addname" />
+    <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+
+    <association property="classes" javaType="com.trkj.tsm.entity.Classes">
+      <id column="Classes_Id" jdbcType="INTEGER" property="classesId" />
+      <result column="Course_Id" jdbcType="INTEGER" property="courseId" />
+      <result column="Teacher_Id" jdbcType="INTEGER" property="teacherId" />
+      <result column="Emp_Id" jdbcType="INTEGER" property="empId" />
+      <result column="Classes_Name" jdbcType="VARCHAR" property="classesName" />
+      <result column="Classes_Size" jdbcType="VARCHAR" property="classesSize" />
+      <result column="Classes_Open" jdbcType="INTEGER" property="classesOpen" />
+      <result column="StartedDate" jdbcType="TIMESTAMP" property="starteddate" />
+      <result column="EndDate" jdbcType="TIMESTAMP" property="enddate" />
+      <result column="LastDate" jdbcType="TIMESTAMP" property="lastdate" />
+      <result column="AddName" jdbcType="VARCHAR" property="addname" />
+      <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+      <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+      <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+      <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+      <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+      <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+    </association>
+
+    <association property="student" javaType="com.trkj.tsm.entity.Student">
+      <id column="Student_Id" jdbcType="INTEGER" property="studentId"/>
+      <result column="Classes_Id" jdbcType="INTEGER" property="classesId"/>
+      <result column="Source_Id" jdbcType="INTEGER" property="sourceId"/>
+      <result column="Student_Number" jdbcType="VARCHAR" property="studentNumber"/>
+      <result column="Student_Name" jdbcType="VARCHAR" property="studentName"/>
+      <result column="StudyTime" jdbcType="TIMESTAMP" property="studytime"/>
+      <result column="Entrance" jdbcType="VARCHAR" property="entrance"/>
+      <result column="Sex" jdbcType="VARCHAR" property="sex"/>
+      <result column="Student_Phone" jdbcType="VARCHAR" property="studentPhone"/>
+      <result column="Address" jdbcType="VARCHAR" property="address"/>
+      <result column="ImgAddress" jdbcType="VARCHAR" property="imgaddress"/>
+      <result column="ParentName" jdbcType="VARCHAR" property="parentname"/>
+      <result column="ParentPhone" jdbcType="VARCHAR" property="parentphone"/>
+      <result column="UpdateName" jdbcType="VARCHAR" property="updatename"/>
+      <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime"/>
+      <result column="DeleteName" jdbcType="VARCHAR" property="deletename"/>
+      <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime"/>
+      <result column="TimeLiness" jdbcType="INTEGER" property="timeliness"/>
+    </association>
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    Interview_Id, Classes_Id, Student_Id, Interview_Time, InterviewName, Theme, Progress, 
+    UpdateName, UpdateTime, DeleteName, DeleteTime, AddName, ADDTIME, TimeLiness
+  </sql>
+  <!--访谈表-->
+  <sql id="Base_Column_interview">
+    inv.Interview_Id, inv.Classes_Id, inv.Student_Id, inv.Interview_Time, inv.InterviewName, inv.Theme, inv.Progress,
+    inv.UpdateName, inv.UpdateTime, inv.DeleteName, inv.DeleteTime, inv.AddName, inv.ADDTIME, inv.TimeLiness
+  </sql>
+  <!--班级表-->
+  <sql id="Base_Column_List_classes">
+    c.Classes_Id, c.Course_Id, c.Teacher_Id, c.Emp_Id, c.Classes_Name,c.Classes_Size,c.Classes_Open,
+    c.StartedDate, c.EndDate, c.LastDate, c.AddName, c.ADDTIME, c.UpdateName, c.UpdateTime, c.DeleteName,
+    c.DeleteTime, c.TimeLiness
+  </sql>
+  <!--学员表-->
+  <sql id="Base_Column_List4">
+    stu.Student_Id, stu.Classes_Id, stu.Source_Id, stu.Register_Id, stu.Student_Number, stu.Student_Name, stu.StudyTime,
+    stu. Entrance, stu.Sex, stu.Student_Phone, stu.Address, stu.ImgAddress, stu.ParentName, stu.ParentPhone, stu.UpdateName,
+    stu.UpdateTime,stu.DeleteName, stu.DeleteTime, stu.TimeLiness
+   </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from interview
+    where Interview_Id = #{interviewId,jdbcType=INTEGER}
+  </select>
+  <!--根据学员的id查询相关访谈记录-->
+  <select id="selAllInterview" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_interview" />,
+    <include refid="Base_Column_List_classes" />,
+    <include refid="Base_Column_List4" />
+    from interview inv
+    inner join classes c on inv.Classes_Id=c.Classes_Id
+    inner join student stu on inv.Student_Id=stu.Student_Id
+    where inv.Student_Id= #{interviewId,jdbcType=INTEGER}
+    AND inv.TimeLiness=0
+    order by Interview_Id desc
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from interview
+    where Interview_Id = #{interviewId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="Interview_Id" keyProperty="interviewId" parameterType="com.trkj.tsm.entity.Interview" useGeneratedKeys="true">
+    insert into interview (Classes_Id, Student_Id, Interview_Time, 
+      InterviewName, Theme, Progress, 
+      UpdateName, UpdateTime, DeleteName, 
+      DeleteTime, AddName, ADDTIME, 
+      TimeLiness)
+    values (#{classesId,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{interviewTime,jdbcType=TIMESTAMP}, 
+      #{interviewname,jdbcType=VARCHAR}, #{theme,jdbcType=VARCHAR}, #{progress,jdbcType=VARCHAR}, 
+      #{updatename,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{deletename,jdbcType=VARCHAR}, 
+      #{deletetime,jdbcType=TIMESTAMP}, #{addname,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, 
+      #{timeliness,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="Interview_Id" keyProperty="interviewId" parameterType="com.trkj.tsm.entity.Interview" useGeneratedKeys="true">
+    insert into interview
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="classesId != null">
+        Classes_Id,
+      </if>
+      <if test="studentId != null">
+        Student_Id,
+      </if>
+      <if test="interviewTime != null">
+        Interview_Time,
+      </if>
+      <if test="interviewname != null">
+        InterviewName,
+      </if>
+      <if test="theme != null">
+        Theme,
+      </if>
+      <if test="progress != null">
+        Progress,
+      </if>
+      <if test="updatename != null">
+        UpdateName,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+      <if test="deletename != null">
+        DeleteName,
+      </if>
+      <if test="deletetime != null">
+        DeleteTime,
+      </if>
+      <if test="addname != null">
+        AddName,
+      </if>
+      <if test="addtime != null">
+        ADDTIME,
+      </if>
+      <if test="timeliness != null">
+        TimeLiness,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="classesId != null">
+        #{classesId,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null">
+        #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="interviewTime != null">
+        #{interviewTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="interviewname != null">
+        #{interviewname,jdbcType=VARCHAR},
+      </if>
+      <if test="theme != null">
+        #{theme,jdbcType=VARCHAR},
+      </if>
+      <if test="progress != null">
+        #{progress,jdbcType=VARCHAR},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addname != null">
+        #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        #{timeliness,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.entity.Interview">
+    update interview
+    <set>
+      <if test="classesId != null">
+        Classes_Id = #{classesId,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null">
+        Student_Id = #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="interviewTime != null">
+        Interview_Time = #{interviewTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="interviewname != null">
+        InterviewName = #{interviewname,jdbcType=VARCHAR},
+      </if>
+      <if test="theme != null">
+        Theme = #{theme,jdbcType=VARCHAR},
+      </if>
+      <if test="progress != null">
+        Progress = #{progress,jdbcType=VARCHAR},
+      </if>
+      <if test="updatename != null">
+        UpdateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        DeleteName = #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addname != null">
+        AddName = #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        ADDTIME = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        TimeLiness = #{timeliness,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Interview_Id = #{interviewId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.entity.Interview">
+    update interview
+    set Classes_Id = #{classesId,jdbcType=INTEGER},
+      Student_Id = #{studentId,jdbcType=INTEGER},
+      Interview_Time = #{interviewTime,jdbcType=TIMESTAMP},
+      InterviewName = #{interviewname,jdbcType=VARCHAR},
+      Theme = #{theme,jdbcType=VARCHAR},
+      Progress = #{progress,jdbcType=VARCHAR},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      AddName = #{addname,jdbcType=VARCHAR},
+      ADDTIME = #{addtime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER}
+    where Interview_Id = #{interviewId,jdbcType=INTEGER}
+  </update>
+</mapper>

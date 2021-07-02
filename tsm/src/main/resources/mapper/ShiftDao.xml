@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.ShiftDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.vo.ShiftVo">
+    <id column="Shift_Id" jdbcType="INTEGER" property="shiftId" />
+    <result column="Courserecorddetails_Id" jdbcType="INTEGER" property="courserecorddetailsId" />
+    <result column="Oldclass" jdbcType="VARCHAR" property="oldclass" />
+    <result column="Newclass" jdbcType="VARCHAR" property="newclass" />
+    <result column="Shift_Time" jdbcType="TIMESTAMP" property="shiftTime" />
+    <result column="Shift_Reason" jdbcType="VARCHAR" property="shiftReason" />
+    <result column="Shift_Handler" jdbcType="VARCHAR" property="shiftHandler" />
+    <result column="Approval" jdbcType="INTEGER" property="approval" />
+    <result column="JW_AppName" jdbcType="VARCHAR" property="jwAppname" />
+    <result column="JW_AppTime" jdbcType="TIMESTAMP" property="jwApptime" />
+    <result column="JW_DropNameApp" jdbcType="VARCHAR" property="jwDropnameapp" />
+    <result column="JW_DropTimeApp" jdbcType="TIMESTAMP" property="jwDroptimeapp" />
+    <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+    <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+    <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+
+    <association javaType="com.trkj.tsm.vo.CourserecorddetailsVo" property="courserecorddetailsVo">
+      <id column="CourseRecorddetails_Id" jdbcType="INTEGER" property="courserecorddetailsId" />
+      <result column="CourseRecord_Id" jdbcType="INTEGER" property="courserecordId" />
+      <result column="Course_Id" jdbcType="INTEGER" property="courseId" />
+      <result column="Classes_Id" jdbcType="INTEGER" property="classesId"/>
+      <result column="Learningstate" jdbcType="INTEGER" property="learningstate"/>
+      <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    </association>
+  </resultMap>
+
+  <sql id="Base_Column_List_CourseRecorddetails">
+    crr.CourseRecorddetails_Id, crr.CourseRecord_Id, crr.Course_Id,crr.Classes_Id,crr.Learningstate,crr.remarks
+  </sql>
+  <sql id="Base_Column_List_Shift">
+    sh.Shift_Id, sh.Courserecorddetails_Id, sh.Oldclass, sh.Newclass, sh.Shift_Time, sh.Shift_Reason, sh.Shift_Handler,
+    sh.Approval, sh.JW_AppName, sh.JW_AppTime, sh.JW_DropNameApp, sh.JW_DropTimeApp, sh.DeleteName, sh.DeleteTime,
+    sh.TimeLiness
+  </sql>
+
+  <select id="selectAllShift" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List_Shift" />,
+    <include refid="Base_Column_List_CourseRecorddetails" />
+    from shift sh
+    inner join courserecorddetails crr on sh.Courserecorddetails_Id = crr.Courserecorddetails_Id
+    where sh.TimeLiness = 0
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List_Shift" />
+    from shift
+    where Shift_Id = #{shiftId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from shift
+    where Shift_Id = #{shiftId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="Shift_Id" keyProperty="shiftId" parameterType="com.trkj.tsm.entity.Shift" useGeneratedKeys="true">
+    insert into shift (Courserecorddetails_Id, Oldclass, 
+      Newclass, Shift_Time, Shift_Reason, 
+      Shift_Handler, Approval, JW_AppName, 
+      JW_AppTime, JW_DropNameApp, JW_DropTimeApp, 
+      DeleteName, DeleteTime, TimeLiness
+      )
+    values (#{courserecorddetailsId,jdbcType=INTEGER}, #{oldclass,jdbcType=VARCHAR}, 
+      #{newclass,jdbcType=VARCHAR}, #{shiftTime,jdbcType=TIMESTAMP}, #{shiftReason,jdbcType=VARCHAR}, 
+      #{shiftHandler,jdbcType=DECIMAL}, #{approval,jdbcType=INTEGER}, #{jwAppname,jdbcType=VARCHAR}, 
+      #{jwApptime,jdbcType=TIMESTAMP}, #{jwDropnameapp,jdbcType=VARCHAR}, #{jwDroptimeapp,jdbcType=TIMESTAMP}, 
+      #{deletename,jdbcType=VARCHAR}, #{deletetime,jdbcType=TIMESTAMP}, #{timeliness,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="Shift_Id" keyProperty="shiftId" parameterType="com.trkj.tsm.entity.Shift" useGeneratedKeys="true">
+    insert into shift
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="courserecorddetailsId != null">
+        Courserecorddetails_Id,
+      </if>
+      <if test="oldclass != null">
+        Oldclass,
+      </if>
+      <if test="newclass != null">
+        Newclass,
+      </if>
+      <if test="shiftTime != null">
+        Shift_Time,
+      </if>
+      <if test="shiftReason != null">
+        Shift_Reason,
+      </if>
+      <if test="shiftHandler != null">
+        Shift_Handler,
+      </if>
+      <if test="approval != null">
+        Approval,
+      </if>
+      <if test="jwAppname != null">
+        JW_AppName,
+      </if>
+      <if test="jwApptime != null">
+        JW_AppTime,
+      </if>
+      <if test="jwDropnameapp != null">
+        JW_DropNameApp,
+      </if>
+      <if test="jwDroptimeapp != null">
+        JW_DropTimeApp,
+      </if>
+      <if test="deletename != null">
+        DeleteName,
+      </if>
+      <if test="deletetime != null">
+        DeleteTime,
+      </if>
+      <if test="timeliness != null">
+        TimeLiness,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="courserecorddetailsId != null">
+        #{courserecorddetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="oldclass != null">
+        #{oldclass,jdbcType=VARCHAR},
+      </if>
+      <if test="newclass != null">
+        #{newclass,jdbcType=VARCHAR},
+      </if>
+      <if test="shiftTime != null">
+        #{shiftTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shiftReason != null">
+        #{shiftReason,jdbcType=VARCHAR},
+      </if>
+      <if test="shiftHandler != null">
+        #{shiftHandler,jdbcType=DECIMAL},
+      </if>
+      <if test="approval != null">
+        #{approval,jdbcType=INTEGER},
+      </if>
+      <if test="jwAppname != null">
+        #{jwAppname,jdbcType=VARCHAR},
+      </if>
+      <if test="jwApptime != null">
+        #{jwApptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jwDropnameapp != null">
+        #{jwDropnameapp,jdbcType=VARCHAR},
+      </if>
+      <if test="jwDroptimeapp != null">
+        #{jwDroptimeapp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        #{timeliness,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.vo.ShiftVo">
+    update shift
+    <set>
+      <if test="courserecorddetailsId != null">
+        Courserecorddetails_Id = #{courserecorddetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="oldclass != null">
+        Oldclass = #{oldclass,jdbcType=VARCHAR},
+      </if>
+      <if test="newclass != null">
+        Newclass = #{newclass,jdbcType=VARCHAR},
+      </if>
+      <if test="shiftTime != null">
+        Shift_Time = #{shiftTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shiftReason != null">
+        Shift_Reason = #{shiftReason,jdbcType=VARCHAR},
+      </if>
+      <if test="shiftHandler != null">
+        Shift_Handler = #{shiftHandler,jdbcType=DECIMAL},
+      </if>
+      <if test="approval != null">
+        Approval = #{approval,jdbcType=INTEGER},
+      </if>
+      <if test="jwAppname != null">
+        JW_AppName = #{jwAppname,jdbcType=VARCHAR},
+      </if>
+      <if test="jwApptime != null">
+        JW_AppTime = #{jwApptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jwDropnameapp != null">
+        JW_DropNameApp = #{jwDropnameapp,jdbcType=VARCHAR},
+      </if>
+      <if test="jwDroptimeapp != null">
+        JW_DropTimeApp = #{jwDroptimeapp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        DeleteName = #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        TimeLiness = #{timeliness,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Shift_Id = #{shiftId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.entity.Shift">
+    update shift
+    set Courserecorddetails_Id = #{courserecorddetailsId,jdbcType=INTEGER},
+      Oldclass = #{oldclass,jdbcType=VARCHAR},
+      Newclass = #{newclass,jdbcType=VARCHAR},
+      Shift_Time = #{shiftTime,jdbcType=TIMESTAMP},
+      Shift_Reason = #{shiftReason,jdbcType=VARCHAR},
+      Shift_Handler = #{shiftHandler,jdbcType=DECIMAL},
+      Approval = #{approval,jdbcType=INTEGER},
+      JW_AppName = #{jwAppname,jdbcType=VARCHAR},
+      JW_AppTime = #{jwApptime,jdbcType=TIMESTAMP},
+      JW_DropNameApp = #{jwDropnameapp,jdbcType=VARCHAR},
+      JW_DropTimeApp = #{jwDroptimeapp,jdbcType=TIMESTAMP},
+      DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER}
+    where Shift_Id = #{shiftId,jdbcType=INTEGER}
+  </update>
+</mapper>

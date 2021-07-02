@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.AdvancearrangeDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.vo.AdvancearrangeVo">
+    <id column="Arrange_Id" jdbcType="INTEGER" property="arrangeId" />
+    <result column="Arrange_Date" jdbcType="TIMESTAMP" property="arrangeDate" />
+    <result column="Remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="IsExamine" jdbcType="INTEGER" property="isexamine" />
+    <result column="AddName" jdbcType="VARCHAR" property="addname" />
+    <result column="Period_Id" jdbcType="INTEGER" property="periodId" />
+    <result column="Classes_Id" jdbcType="INTEGER" property="classesId" />
+    <result column="ClassRoom_Id" jdbcType="INTEGER" property="classroomId" />
+    <result column="Emp_Id" jdbcType="INTEGER" property="empId" />
+    <association property="classesVo" javaType="com.trkj.tsm.vo.ClassesVo">
+      <result property="classesName" column="Classes_Name" jdbcType="VARCHAR"/>
+    </association>
+    <association property="classroomVo" javaType="com.trkj.tsm.vo.ClassroomVo">
+      <result property="classroomName" column="ClassRoom_Name" jdbcType="VARCHAR"/>
+    </association>
+    <association property="empVo" javaType="com.trkj.tsm.vo.EmpVo">
+      <result column="Emp_Name" jdbcType="VARCHAR" property="empName" />
+    </association>
+    <association property="trainingPeriodVo" javaType="com.trkj.tsm.vo.TrainingPeriodVo">
+      <result property="period" column="Period" jdbcType="VARCHAR"/>
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    a.Arrange_Id, a.Arrange_Date, a.Remarks, a.IsExamine, a.AddName, a.Period_Id, a.Classes_Id, a.ClassRoom_Id,
+    a.Emp_Id
+  </sql>
+
+  <insert id="addAdvancearrange" keyColumn="Arrange_Id" keyProperty="arrangeId" parameterType="com.trkj.tsm.vo.AdvancearrangeVo" useGeneratedKeys="true">
+    insert into advancearrange (Arrange_Date, Remarks,
+      AddName, Period_Id, Classes_Id, 
+      ClassRoom_Id, Emp_Id)
+    values (#{arrangeDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR},
+      #{addname,jdbcType=VARCHAR}, #{periodId,jdbcType=INTEGER}, #{classesId,jdbcType=INTEGER}, 
+      #{classroomId,jdbcType=INTEGER}, #{empId,jdbcType=INTEGER})
+  </insert>
+
+  <select id="selectAllAdvancearrange" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />,e.Emp_Name,c.Classes_Name,cr.ClassRoom_Name,t.Period
+    from advancearrange a
+    LEFT JOIN emp e ON e.Emp_Id = a.Emp_Id
+    LEFT JOIN classes c ON c.Classes_Id = a.Classes_Id
+    LEFT JOIN classroom cr ON cr.ClassRoom_Id = a.ClassRoom_Id
+    LEFT JOIN trainingperiod t ON t.Period_Id = a.Period_Id
+    WHERE a.IsExamine = 0
+  </select>
+  <update id="updateByAdvancearrangeKey" parameterType="com.trkj.tsm.vo.AdvancearrangeVo">
+    update advancearrange
+    set Arrange_Date = #{arrangeDate,jdbcType=TIMESTAMP},
+      Remarks = #{remarks,jdbcType=VARCHAR},
+      IsExamine = #{isexamine,jdbcType=INTEGER},
+      AddName = #{addname,jdbcType=VARCHAR},
+      Period_Id = #{periodId,jdbcType=INTEGER},
+      Classes_Id = #{classesId,jdbcType=INTEGER},
+      ClassRoom_Id = #{classroomId,jdbcType=INTEGER},
+      Emp_Id = #{empId,jdbcType=INTEGER}
+    where Arrange_Id = #{arrangeId,jdbcType=INTEGER}
+  </update>
+
+  <update id="clearArrange">
+    Truncate Table advancearrange
+  </update>
+</mapper>

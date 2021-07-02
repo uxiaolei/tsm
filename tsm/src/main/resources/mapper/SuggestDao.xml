@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.SuggestDao">
+    <resultMap id="BaseResultMap" type="com.trkj.tsm.entity.Suggest">
+        <id column="Suggest_Id" jdbcType="INTEGER" property="suggestId"/>
+        <result column="Suggest_Name" jdbcType="VARCHAR" property="suggestName"/>
+        <result column="Dept_Id" jdbcType="INTEGER" property="deptId"/>
+        <result column="Suggest_State" jdbcType="INTEGER" property="suggestState"/>
+        <result column="Suggest_Remarks" jdbcType="VARCHAR" property="suggestRemarks"/>
+        <result column="Addname" jdbcType="VARCHAR" property="addname"/>
+        <result column="AddTime" jdbcType="TIMESTAMP" property="addtime"/>
+        <result column="UpdateName" jdbcType="VARCHAR" property="updatename"/>
+        <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime"/>
+        <result column="DeleteName" jdbcType="VARCHAR" property="deletename"/>
+        <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime"/>
+        <result column="TimeLiness" jdbcType="INTEGER" property="timeliness"/>
+        <association property="dept" javaType="com.trkj.tsm.entity.Dept">
+            <id column="Dept_Id" jdbcType="INTEGER" property="deptId"/>
+            <result column="Dept_Name" jdbcType="VARCHAR" property="deptName"/>
+            <result column="Dept_SortNumber" jdbcType="VARCHAR" property="deptSortnumber"/>
+            <result column="Superiors_Dept_Id" jdbcType="INTEGER" property="superiorsDeptId"/>
+            <result column="AddName" jdbcType="VARCHAR" property="addname"/>
+            <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime"/>
+            <result column="UpdateName" jdbcType="VARCHAR" property="updatename"/>
+            <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime"/>
+            <result column="DeleteName" jdbcType="VARCHAR" property="deletename"/>
+            <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime"/>
+            <result column="TimeLiness" jdbcType="INTEGER" property="timeliness"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_Suggest">
+    s.Suggest_Id, s.Suggest_Name, s.Dept_Id,s.Suggest_State,s.Suggest_Remarks, s.Addname, s.AddTime, s.UpdateName, s.UpdateTime, s.DeleteName,
+    s.DeleteTime, s.TimeLiness
+  </sql>
+    <sql id="Base_Column_Dept">
+    d.Dept_Id, d.Dept_Name, d.Dept_SortNumber, d.Superiors_Dept_Id, d.AddName, d.ADDTIME, d.UpdateName,
+    d.UpdateTime, d.DeleteName, d.DeleteTime, d.TimeLiness
+  </sql>
+    <select id="selectAllSuggest" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_Suggest"/>,
+        <include refid="Base_Column_Dept"/>
+        from suggest s
+        inner join dept d on s.Dept_Id = d.Dept_Id
+        where s.TimeLiness = 0
+    </select>
+    <select id="selectAllSuggestByState" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_Suggest"/>,
+        <include refid="Base_Column_Dept"/>
+        from suggest s
+        inner join dept d on s.Dept_Id = d.Dept_Id
+        where s.TimeLiness = 0
+        and s.Suggest_State= 0
+    </select>
+    <select id="selectSuggestByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_Suggest"/>,
+        <include refid="Base_Column_Dept"/>
+        from suggest s
+        inner join dept d on s.Dept_Id = d.Dept_Id
+        where s.TimeLiness = 0
+        and s.Suggest_Name like CONCAT('%',#{suggestName,jdbcType=VARCHAR},'%')
+    </select>
+    <select id="selectSuggestByDeptId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_Suggest"/>,
+        <include refid="Base_Column_Dept"/>
+        from suggest s
+        inner join dept d on s.Dept_Id = d.Dept_Id
+        where s.TimeLiness = 0
+        and s.Dept_Id = #{dpetId,jdbcType=INTEGER}
+    </select>
+    <select id="selectSuggestByDept" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_Suggest"/>,
+        <include refid="Base_Column_Dept"/>
+        from suggest s
+        inner join dept d on s.Dept_Id = d.Dept_Id
+        where s.TimeLiness = 0
+        and d.Dept_Name like CONCAT('%',#{deptName,jdbcType=VARCHAR},'%')
+    </select>
+    <insert id="insertSuggest" keyColumn="Suggest_Id" keyProperty="suggestId"
+            parameterType="com.trkj.tsm.entity.Suggest">
+    insert into suggest (Suggest_Name, Dept_Id, Suggest_Remarks, Addname, AddTime)
+    values (#{suggestName,jdbcType=VARCHAR}, #{deptId,jdbcType=INTEGER}, #{suggestRemarks,jdbcType=VARCHAR},
+    #{addname,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP})
+  </insert>
+    <update id="updateSuggest" parameterType="com.trkj.tsm.entity.Suggest">
+    update suggest
+    set Suggest_Name = #{suggestName,jdbcType=VARCHAR},
+      Dept_Id = #{deptId,jdbcType=INTEGER},
+      Suggest_Remarks = #{suggestRemarks,jdbcType=VARCHAR},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where Suggest_Id = #{suggestId,jdbcType=INTEGER}
+  </update>
+    <update id="deleteSuggest" parameterType="com.trkj.tsm.entity.Suggest">
+    update suggest
+    set
+      DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER}
+    where Suggest_Id = #{suggestId,jdbcType=INTEGER}
+  </update>
+    <update id="updateSuggestState" parameterType="com.trkj.tsm.entity.Suggest">
+    update suggest
+    set
+      Suggest_State = #{suggestState,jdbcType=INTEGER},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where Suggest_Id = #{suggestId,jdbcType=INTEGER}
+  </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_Suggest"/>
+        from suggest
+        where Suggest_Id = #{suggestId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from suggest
+    where Suggest_Id = #{suggestId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" keyColumn="Suggest_Id" keyProperty="suggestId" parameterType="com.trkj.tsm.entity.Suggest"
+            useGeneratedKeys="true">
+    insert into suggest (Suggest_Name, Dept_Id, Addname, 
+      AddTime, UpdateName, UpdateTime, 
+      DeleteName, DeleteTime, TimeLiness
+      )
+    values (#{suggestName,jdbcType=VARCHAR}, #{deptId,jdbcType=INTEGER}, #{addname,jdbcType=VARCHAR}, 
+      #{addtime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{deletename,jdbcType=VARCHAR}, #{deletetime,jdbcType=TIMESTAMP}, #{timeliness,jdbcType=INTEGER}
+      )
+  </insert>
+    <insert id="insertSelective" keyColumn="Suggest_Id" keyProperty="suggestId"
+            parameterType="com.trkj.tsm.entity.Suggest" useGeneratedKeys="true">
+        insert into suggest
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="suggestName != null">
+                Suggest_Name,
+            </if>
+            <if test="deptId != null">
+                Dept_Id,
+            </if>
+            <if test="addname != null">
+                Addname,
+            </if>
+            <if test="addtime != null">
+                AddTime,
+            </if>
+            <if test="updatename != null">
+                UpdateName,
+            </if>
+            <if test="updatetime != null">
+                UpdateTime,
+            </if>
+            <if test="deletename != null">
+                DeleteName,
+            </if>
+            <if test="deletetime != null">
+                DeleteTime,
+            </if>
+            <if test="timeliness != null">
+                TimeLiness,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="suggestName != null">
+                #{suggestName,jdbcType=VARCHAR},
+            </if>
+            <if test="deptId != null">
+                #{deptId,jdbcType=INTEGER},
+            </if>
+            <if test="addname != null">
+                #{addname,jdbcType=VARCHAR},
+            </if>
+            <if test="addtime != null">
+                #{addtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatename != null">
+                #{updatename,jdbcType=VARCHAR},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deletename != null">
+                #{deletename,jdbcType=VARCHAR},
+            </if>
+            <if test="deletetime != null">
+                #{deletetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="timeliness != null">
+                #{timeliness,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.entity.Suggest">
+        update suggest
+        <set>
+            <if test="suggestName != null">
+                Suggest_Name = #{suggestName,jdbcType=VARCHAR},
+            </if>
+            <if test="deptId != null">
+                Dept_Id = #{deptId,jdbcType=INTEGER},
+            </if>
+            <if test="addname != null">
+                Addname = #{addname,jdbcType=VARCHAR},
+            </if>
+            <if test="addtime != null">
+                AddTime = #{addtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatename != null">
+                UpdateName = #{updatename,jdbcType=VARCHAR},
+            </if>
+            <if test="updatetime != null">
+                UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deletename != null">
+                DeleteName = #{deletename,jdbcType=VARCHAR},
+            </if>
+            <if test="deletetime != null">
+                DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="timeliness != null">
+                TimeLiness = #{timeliness,jdbcType=INTEGER},
+            </if>
+        </set>
+        where Suggest_Id = #{suggestId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.entity.Suggest">
+    update suggest
+    set Suggest_Name = #{suggestName,jdbcType=VARCHAR},
+      Dept_Id = #{deptId,jdbcType=INTEGER},
+      Addname = #{addname,jdbcType=VARCHAR},
+      AddTime = #{addtime,jdbcType=TIMESTAMP},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER}
+    where Suggest_Id = #{suggestId,jdbcType=INTEGER}
+  </update>
+</mapper>

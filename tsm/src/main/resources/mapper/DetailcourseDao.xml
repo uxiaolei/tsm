@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.DetailcourseDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.vo.DetailcourseVo">
+    <id column="DetailCourse_Id" jdbcType="INTEGER" property="detailcourseId" />
+    <result column="Course_Id" jdbcType="INTEGER" property="courseId" />
+    <result column="DetailCourse_Name" jdbcType="VARCHAR" property="detailcourseName" />
+    <result column="Serial" jdbcType="INTEGER" property="serial" />
+    <result column="AddName" jdbcType="VARCHAR" property="addname" />
+    <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+    <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+    <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DetailCourse_Id, Course_Id, DetailCourse_Name, Serial, AddName, ADDTIME, UpdateName, 
+    UpdateTime, DeleteName, DeleteTime, TimeLiness
+  </sql>
+  <sql id="Base_Column_DetailCourse">
+    dc.DetailCourse_Id, dc.Course_Id, dc.DetailCourse_Name, dc.Serial, dc.AddName, dc.ADDTIME, dc.UpdateName,
+    dc.UpdateTime, dc.DeleteName, dc.DeleteTime, dc.TimeLiness
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from detailcourse
+    where DetailCourse_Id = #{detailcourseId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from detailcourse
+    where DetailCourse_Id = #{detailcourseId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="DetailCourse_Id" keyProperty="detailcourseId" parameterType="com.trkj.tsm.vo.DetailcourseVo" useGeneratedKeys="true">
+    insert into detailcourse (Course_Id, DetailCourse_Name, Serial, 
+      AddName, ADDTIME, UpdateName, 
+      UpdateTime, DeleteName, DeleteTime, 
+      TimeLiness)
+    values (#{courseId,jdbcType=INTEGER}, #{detailcourseName,jdbcType=VARCHAR}, #{serial,jdbcType=INTEGER}, 
+      #{addname,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{deletename,jdbcType=VARCHAR}, #{deletetime,jdbcType=TIMESTAMP}, 
+      #{timeliness,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="DetailCourse_Id" keyProperty="detailcourseId" parameterType="com.trkj.tsm.vo.DetailcourseVo" useGeneratedKeys="true">
+    insert into detailcourse
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="courseId != null">
+        Course_Id,
+      </if>
+      <if test="detailcourseName != null">
+        DetailCourse_Name,
+      </if>
+      <if test="serial != null">
+        Serial,
+      </if>
+      <if test="addname != null">
+        AddName,
+      </if>
+      <if test="addtime != null">
+        ADDTIME,
+      </if>
+      <if test="updatename != null">
+        UpdateName,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+      <if test="deletename != null">
+        DeleteName,
+      </if>
+      <if test="deletetime != null">
+        DeleteTime,
+      </if>
+      <if test="timeliness != null">
+        TimeLiness,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="courseId != null">
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="detailcourseName != null">
+        #{detailcourseName,jdbcType=VARCHAR},
+      </if>
+      <if test="serial != null">
+        #{serial,jdbcType=INTEGER},
+      </if>
+      <if test="addname != null">
+        #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        #{timeliness,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.vo.DetailcourseVo">
+    update detailcourse
+    <set>
+      <if test="courseId != null">
+        Course_Id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="detailcourseName != null">
+        DetailCourse_Name = #{detailcourseName,jdbcType=VARCHAR},
+      </if>
+      <if test="serial != null">
+        Serial = #{serial,jdbcType=INTEGER},
+      </if>
+      <if test="addname != null">
+        AddName = #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        ADDTIME = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        UpdateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        DeleteName = #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        TimeLiness = #{timeliness,jdbcType=INTEGER},
+      </if>
+    </set>
+    where DetailCourse_Id = #{detailcourseId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.vo.DetailcourseVo">
+    update detailcourse
+    set Course_Id = #{courseId,jdbcType=INTEGER},
+      DetailCourse_Name = #{detailcourseName,jdbcType=VARCHAR},
+      Serial = #{serial,jdbcType=INTEGER},
+      AddName = #{addname,jdbcType=VARCHAR},
+      ADDTIME = #{addtime,jdbcType=TIMESTAMP},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER}
+    where DetailCourse_Id = #{detailcourseId,jdbcType=INTEGER}
+  </update>
+</mapper>

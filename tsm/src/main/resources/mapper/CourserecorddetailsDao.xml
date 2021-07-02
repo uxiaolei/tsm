@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.CourserecorddetailsDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.vo.CourserecorddetailsVo">
+    <id column="CourseRecorddetails_Id" jdbcType="INTEGER" property="courserecorddetailsId" />
+    <result column="CourseRecord_Id" jdbcType="INTEGER" property="courserecordId" />
+    <result column="Course_Id" jdbcType="INTEGER" property="courseId" />
+    <result column="Classes_Id" jdbcType="INTEGER" property="classesId"/>
+    <result column="Learningstate" jdbcType="INTEGER" property="learningstate"/>
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+
+    <association property="courseVo" javaType="com.trkj.tsm.vo.CourseVo">
+      <id column="Course_id" jdbcType="INTEGER" property="courseId" />
+      <result column="Course_Name" jdbcType="VARCHAR" property="courseName" />
+      <result column="Course_State" jdbcType="VARCHAR" property="courseState" />
+      <result column="Classhours" jdbcType="INTEGER" property="classhours" />
+      <result column="Course_Money" jdbcType="DECIMAL" property="courseMoney" />
+      <result column="ClassType_Id" jdbcType="INTEGER" property="classtypeId" />
+      <result column="AddName" jdbcType="VARCHAR" property="addname" />
+      <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+      <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+      <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+      <result column="StopTime" jdbcType="VARCHAR" property="stoptime" />
+      <result column="StopName" jdbcType="TIMESTAMP" property="stopname" />
+      <result column="BeginTime" jdbcType="VARCHAR" property="begintime" />
+      <result column="BeginName" jdbcType="TIMESTAMP" property="beginname" />
+      <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+      <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+      <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+    </association>
+
+    <association property="classesVo" javaType="com.trkj.tsm.vo.ClassesVo">
+      <id column="Classes_Id" jdbcType="INTEGER" property="classesId" />
+      <result column="Course_Id" jdbcType="INTEGER" property="courseId" />
+      <result column="Teacher_Id" jdbcType="INTEGER" property="teacherId" />
+      <result column="Emp_Id" jdbcType="INTEGER" property="empId" />
+      <result column="Classes_Name" jdbcType="VARCHAR" property="classesName" />
+      <result column="Classes_Size" jdbcType="VARCHAR" property="classesSize" />
+      <result column="Classes_Open" jdbcType="INTEGER" property="classesOpen" />
+      <result column="StartedDate" jdbcType="TIMESTAMP" property="starteddate" />
+      <result column="EndDate" jdbcType="TIMESTAMP" property="enddate" />
+      <result column="LastDate" jdbcType="TIMESTAMP" property="lastdate" />
+      <result column="AddName" jdbcType="VARCHAR" property="addname" />
+      <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+      <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+      <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+      <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+      <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+      <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+    </association>
+
+    <association property="courserecordVo" javaType="com.trkj.tsm.vo.CourserecordVo">
+      <id column="CourseRecord_Id" jdbcType="INTEGER" property="courserecordId" />
+      <result column="Student_Id" jdbcType="INTEGER" property="studentId" />
+      <result column="Emp_Id" jdbcType="INTEGER" property="empId" />
+      <result column="AddName" jdbcType="VARCHAR" property="addname" />
+      <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+      <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+      <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+      <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+      <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+      <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List_CourseRecorddetails">
+    crr.CourseRecorddetails_Id, crr.CourseRecord_Id, crr.Course_Id,crr.Classes_Id,crr.Learningstate,crr.remarks
+  </sql>
+  <sql id="Base_Column_List_course">
+    co.Course_id, co.Course_Name, co.Course_State, co.Classhours, co.Course_Money, co.ClassType_Id, co.AddName,
+    co.ADDTIME, co.UpdateName, co.UpdateTime, co.StopTime, co.StopName, co.BeginTime, co.BeginName, co.DeleteName,
+    co.DeleteTime, co.TimeLiness
+  </sql>
+  <sql id="Base_Column_List_classes">
+    c1.Classes_Id, c1.Course_Id, c1.Teacher_Id, c1.Emp_Id, c1.Classes_Name,c1.Classes_Size,c1.Classes_Open,
+    c1.StartedDate, c1.EndDate, c1.LastDate, c1.AddName, c1.ADDTIME, c1.UpdateName, c1.UpdateTime, c1.DeleteName,
+    c1.DeleteTime, c1.TimeLiness
+  </sql>
+  <sql id="Base_Column_List_CourseRecord">
+    cur.CourseRecord_Id, cur.Student_Id, cur.Emp_Id, cur.AddName, cur.ADDTIME, cur.UpdateName, cur.UpdateTime,
+    cur.DeleteName, cur.DeleteTime, cur.TimeLiness
+  </sql>
+
+  <select id="selectAllCourseRecorddetail" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List_CourseRecorddetails" />,
+    <include refid="Base_Column_List_course" />,
+    <include refid="Base_Column_List_classes" />,
+    <include refid="Base_Column_List_CourseRecord" />
+    from courserecorddetails crr
+    inner join course co on crr.Course_Id=co.Course_Id
+    inner join courserecord cur on crr.CourseRecord_Id=cur.CourseRecord_Id
+    inner join classes c1 on crr.Classes_Id=c1.Classes_Id
+  </select>
+
+  <select id="selectAllCourseRecorddetails" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List_CourseRecorddetails" />,
+    <include refid="Base_Column_List_course" />,
+<!--    <include refid="Base_Column_List_classes" />,-->
+    <include refid="Base_Column_List_CourseRecord" />
+    from courserecorddetails crr
+    inner join course co on crr.Course_Id=co.Course_Id
+--     inner join classes c on crr.Classes_Id=c.Classes_Id
+    inner join courserecord cur on crr.CourseRecord_Id=cur.CourseRecord_Id
+    where crr.CourseRecord_Id = #{courseRecordId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAllCourseRecorddetailss" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List_CourseRecorddetails" />,
+    <include refid="Base_Column_List_course" />,
+    <include refid="Base_Column_List_classes" />,
+    <include refid="Base_Column_List_CourseRecord" />
+    from courserecorddetails crr
+    inner join course co on crr.Course_Id=co.Course_Id
+    inner join courserecord cur on crr.CourseRecord_Id=cur.CourseRecord_Id
+
+    LEFT JOIN classes c1 on crr.Classes_Id=c1.Classes_Id
+    where crr.CourseRecord_Id = #{courseRecordId,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List_CourseRecorddetails" />
+    from courserecorddetails
+    where CourseRecorddetails_Id = #{courserecorddetailsId,jdbcType=INTEGER}
+  </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from courserecorddetails
+    where CourseRecorddetails_Id = #{courserecorddetailsId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="CourseRecorddetails_Id" keyProperty="courserecorddetailsId" parameterType="com.trkj.tsm.vo.CourserecorddetailsVo" useGeneratedKeys="true">
+    insert into courserecorddetails (CourseRecorddetails_Id, CourseRecord_Id, Course_Id,Classes_Id,Learningstate,remarks
+      )
+    values (#{courserecordId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{classesId,jdbcType=INTEGER}, #{learningstate,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="CourseRecorddetails_Id"  keyProperty="courserecorddetailsId" parameterType="com.trkj.tsm.vo.CourserecorddetailsVo" useGeneratedKeys="true">
+    insert into courserecorddetails
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="courserecordId != null">
+        CourseRecord_Id,
+      </if>
+      <if test="courseId != null">
+        Course_Id,
+      </if>
+      <if test="classesId != null">
+        Classes_Id,
+      </if>
+      <if test="learningstate != null">
+        Learningstate,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="courserecordId != null">
+        #{courserecordId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="classesId != null">
+        #{classesId,jdbcType=INTEGER},
+      </if>
+      <if test="learningstate != null">
+        #{learningstate,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.vo.CourserecorddetailsVo">
+    update courserecorddetails
+    <set>
+      <if test="courserecordId != null">
+        CourseRecord_Id = #{courserecordId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        Course_Id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="classesId != null">
+        ClassesId = #{classesId,jdbcType=INTEGER},
+      </if>
+      <if test="learningstate != null">
+        Learningstate = #{learningstate,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CourseRecorddetails_Id = #{courserecorddetailsId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateclassesId" parameterType="java.lang.Integer" >
+        update courserecorddetails
+        set Classes_Id = #{classesId,jdbcType=INTEGER}
+        where CourseRecorddetails_Id = #{courserecorddetailsId,jdbcType=INTEGER}
+  </update>
+
+
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.vo.CourserecorddetailsVo">
+    update courserecorddetails
+    set CourseRecord_Id = #{courserecordId,jdbcType=INTEGER},
+      Course_Id = #{courseId,jdbcType=INTEGER},
+      Classes_Id = #{classesId,jdbcType=INTEGER},
+      Learningstate = #{learningstate,jdbcType=INTEGER},
+      remarks = #{remarks,jdbcType=VARCHAR}
+    where CourseRecorddetails_Id = #{courserecorddetailsId,jdbcType=INTEGER}
+  </update>
+</mapper>

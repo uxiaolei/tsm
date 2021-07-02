@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.PositionDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.entity.Position">
+    <id column="Position_Id" jdbcType="INTEGER" property="positionId" />
+    <result column="Position_Name" jdbcType="VARCHAR" property="positionName" />
+    <result column="AddName" jdbcType="VARCHAR" property="addname" />
+    <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="UpdateName" jdbcType="VARCHAR" property="updatename" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="DeleteName" jdbcType="VARCHAR" property="deletename" />
+    <result column="DeleteTime" jdbcType="TIMESTAMP" property="deletetime" />
+    <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Position_Id, Position_Name, AddName, ADDTIME, UpdateName, UpdateTime, DeleteName, 
+    DeleteTime, TimeLiness
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from position
+    where Position_Id = #{positionId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllPosition" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from position
+    where TimeLiness = 0
+  </select>
+  <insert id="insertPosition" parameterType="com.trkj.tsm.entity.Position"  keyColumn="Position_Id" keyProperty="positionId">
+    insert into position (Position_Name, AddName, ADDTIME)
+    values (#{positionName,jdbcType=VARCHAR}, #{addname,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updatePosition" parameterType="com.trkj.tsm.entity.Position">
+    update position
+    set Position_Name = #{positionName,jdbcType=VARCHAR},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where Position_Id = #{positionId,jdbcType=INTEGER}
+  </update>
+  <update id="deletePosition" parameterType="com.trkj.tsm.entity.Position">
+    update position
+    set DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      TimeLiness = 1
+    where Position_Id = #{positionId,jdbcType=INTEGER}
+  </update>
+  <select id="selectPositionByName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from position
+    where TimeLiness = 0
+    and Position_Name like CONCAT('%',#{positionName,jdbcType=VARCHAR},'%')
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from position
+    where Position_Id = #{positionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="Position_Id" keyProperty="positionId" parameterType="com.trkj.tsm.entity.Position" useGeneratedKeys="true">
+    insert into position (Position_Name, AddName, ADDTIME, 
+      UpdateName, UpdateTime, DeleteName, 
+      DeleteTime, TimeLiness)
+    values (#{positionName,jdbcType=VARCHAR}, #{addname,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, 
+      #{updatename,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{deletename,jdbcType=VARCHAR}, 
+      #{deletetime,jdbcType=TIMESTAMP}, #{timeliness,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="Position_Id" keyProperty="positionId" parameterType="com.trkj.tsm.entity.Position" useGeneratedKeys="true">
+    insert into position
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="positionName != null">
+        Position_Name,
+      </if>
+      <if test="addname != null">
+        AddName,
+      </if>
+      <if test="addtime != null">
+        ADDTIME,
+      </if>
+      <if test="updatename != null">
+        UpdateName,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+      <if test="deletename != null">
+        DeleteName,
+      </if>
+      <if test="deletetime != null">
+        DeleteTime,
+      </if>
+      <if test="timeliness != null">
+        TimeLiness,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="positionName != null">
+        #{positionName,jdbcType=VARCHAR},
+      </if>
+      <if test="addname != null">
+        #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        #{timeliness,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.entity.Position">
+    update position
+    <set>
+      <if test="positionName != null">
+        Position_Name = #{positionName,jdbcType=VARCHAR},
+      </if>
+      <if test="addname != null">
+        AddName = #{addname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        ADDTIME = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        UpdateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletename != null">
+        DeleteName = #{deletename,jdbcType=VARCHAR},
+      </if>
+      <if test="deletetime != null">
+        DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        TimeLiness = #{timeliness,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Position_Id = #{positionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.entity.Position">
+    update position
+    set Position_Name = #{positionName,jdbcType=VARCHAR},
+      AddName = #{addname,jdbcType=VARCHAR},
+      ADDTIME = #{addtime,jdbcType=TIMESTAMP},
+      UpdateName = #{updatename,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      DeleteName = #{deletename,jdbcType=VARCHAR},
+      DeleteTime = #{deletetime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER}
+    where Position_Id = #{positionId,jdbcType=INTEGER}
+  </update>
+</mapper>

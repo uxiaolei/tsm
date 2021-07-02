@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.LoginjournalDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.entity.Loginjournal">
+    <id column="LoginJournal_Id" jdbcType="INTEGER" property="loginjournalId" />
+    <result column="Emp_Id" jdbcType="INTEGER" property="empId" />
+    <result column="LoginTime" jdbcType="TIMESTAMP" property="logintime" />
+    <result column="exitTime" jdbcType="TIMESTAMP" property="exittime" />
+    <association property="emp" javaType="com.trkj.tsm.entity.Emp">
+      <id column="Emp_Id" jdbcType="INTEGER" property="empId" />
+      <result column="Emp_Name" jdbcType="VARCHAR" property="empName" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    l.LoginJournal_Id, l.Emp_Id, l.LoginTime, l.exitTime
+  </sql>
+  <sql id="Base_Column_emp">
+    e.Emp_Id, e.Emp_Name
+  </sql>
+  <select id="selectAllLoginJ" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />,
+    <include refid="Base_Column_emp" />
+    from loginjournal l
+    inner join emp e on l.Emp_Id = e.Emp_id
+    order by l.LoginJournal_Id desc
+  </select>
+  <select id="selectLoginJByEmp"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />,
+    <include refid="Base_Column_emp" />
+    from loginjournal l
+    inner join emp e on l.Emp_Id = e.Emp_id
+    where e.Emp_Name like CONCAT('%',#{empName},'%')
+    order by l.LoginJournal_Id desc
+  </select>
+  <select id="selectLoginJByLoginTime" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />,
+    <include refid="Base_Column_emp" />
+    from loginjournal l
+    inner join emp e on l.Emp_Id = e.Emp_id
+    where l.LoginTime like CONCAT('%',#{logintime},'%')
+    order by l.LoginJournal_Id desc
+  </select>
+  <select id="selectLoginJByLoginTimeAndEmp" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />,
+    <include refid="Base_Column_emp" />
+    from loginjournal l
+    inner join emp e on l.Emp_Id = e.Emp_id
+    where l.LoginTime like CONCAT('%',#{param1},'%')
+    and e.Emp_Name like CONCAT('%',#{param2},'%')
+    order by l.LoginJournal_Id desc
+  </select>
+  <insert id="insertLoginJlogin" keyColumn="LoginJournal_Id" keyProperty="loginjournalId" parameterType="com.trkj.tsm.entity.Loginjournal" useGeneratedKeys="true">
+    insert into loginjournal (Emp_Id, LoginTime)
+    values (#{empId,jdbcType=INTEGER}, #{logintime,jdbcType=TIMESTAMP})
+  </insert>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from loginjournal
+    where LoginJournal_Id = #{loginjournalId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from loginjournal
+    where LoginJournal_Id = #{loginjournalId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="LoginJournal_Id" keyProperty="loginjournalId" parameterType="com.trkj.tsm.entity.Loginjournal" useGeneratedKeys="true">
+    insert into loginjournal (Emp_Id, LoginTime, exitTime
+      )
+    values (#{empId,jdbcType=INTEGER}, #{logintime,jdbcType=TIMESTAMP}, #{exittime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="LoginJournal_Id" keyProperty="loginjournalId" parameterType="com.trkj.tsm.entity.Loginjournal" useGeneratedKeys="true">
+    insert into loginjournal
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="empId != null">
+        Emp_Id,
+      </if>
+      <if test="logintime != null">
+        LoginTime,
+      </if>
+      <if test="exittime != null">
+        exitTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="empId != null">
+        #{empId,jdbcType=INTEGER},
+      </if>
+      <if test="logintime != null">
+        #{logintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="exittime != null">
+        #{exittime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.entity.Loginjournal">
+    update loginjournal
+    <set>
+      <if test="empId != null">
+        Emp_Id = #{empId,jdbcType=INTEGER},
+      </if>
+      <if test="logintime != null">
+        LoginTime = #{logintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="exittime != null">
+        exitTime = #{exittime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where LoginJournal_Id = #{loginjournalId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.entity.Loginjournal">
+    update loginjournal
+    set Emp_Id = #{empId,jdbcType=INTEGER},
+      LoginTime = #{logintime,jdbcType=TIMESTAMP},
+      exitTime = #{exittime,jdbcType=TIMESTAMP}
+    where LoginJournal_Id = #{loginjournalId,jdbcType=INTEGER}
+  </update>
+</mapper>

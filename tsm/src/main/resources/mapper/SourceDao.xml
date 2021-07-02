@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trkj.tsm.dao.SourceDao">
+  <resultMap id="BaseResultMap" type="com.trkj.tsm.vo.SourceVo">
+    <id column="Source_Id" jdbcType="INTEGER" property="sourceId" />
+    <result column="Source_Name" jdbcType="VARCHAR" property="sourceName" />
+    <result column="Already" jdbcType="INTEGER" property="already" />
+    <result column="Potential" jdbcType="INTEGER" property="potential" />
+    <result column="AddChannelName" jdbcType="VARCHAR" property="addchannelname" />
+    <result column="AddChannelTime" jdbcType="TIMESTAMP" property="addchanneltime" />
+    <result column="LastUpdateName" jdbcType="VARCHAR" property="lastupdatename" />
+    <result column="LastUpdateTime" jdbcType="TIMESTAMP" property="lastupdatetime" />
+    <result column="TimeLiness" jdbcType="INTEGER" property="timeliness" />
+    <result column="DelChannelName" jdbcType="VARCHAR" property="delchannelname" />
+    <result column="DelChannelTime" jdbcType="TIMESTAMP" property="delchanneltime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Source_Id, Source_Name, Already, Potential, AddChannelName, AddChannelTime, LastUpdateName, 
+    LastUpdateTime, TimeLiness, DelChannelName, DelChannelTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from source
+    where Source_Id = #{sourceId,jdbcType=INTEGER}
+  </select>
+  <!--查询显示-->
+  <select id="selectAllSources" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from source
+    where timeliness=0
+  </select>
+  <!--模糊查询-->
+  <select id="conditionselect" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from source
+    where TimeLiness=0
+      <if test="sourceName!=null">
+      AND  Source_Name like CONCAT('%',#{flag,jdbcType=VARCHAR},'%')
+      </if>
+      order by Source_Id desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from source
+    where Source_Id = #{sourceId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="Source_Id" keyProperty="sourceId" parameterType="com.trkj.tsm.vo.SourceVo" useGeneratedKeys="true">
+    insert into source (Source_Name, Already, Potential, 
+      AddChannelName, AddChannelTime, LastUpdateName, 
+      LastUpdateTime, TimeLiness, DelChannelName, 
+      DelChannelTime)
+    values (#{sourceName,jdbcType=VARCHAR}, #{already,jdbcType=INTEGER}, #{potential,jdbcType=INTEGER},
+      #{addchannelname,jdbcType=VARCHAR}, #{addchanneltime,jdbcType=TIMESTAMP}, #{lastupdatename,jdbcType=VARCHAR}, 
+      #{lastupdatetime,jdbcType=TIMESTAMP}, #{timeliness,jdbcType=INTEGER}, #{delchannelname,jdbcType=VARCHAR}, 
+      #{delchanneltime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="Source_Id" keyProperty="sourceId" parameterType="com.trkj.tsm.vo.SourceVo" useGeneratedKeys="true">
+    insert into source
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sourceName != null">
+        Source_Name,
+      </if>
+      <if test="already != null">
+        Already,
+      </if>
+      <if test="potential != null">
+        Potential,
+      </if>
+      <if test="addchannelname != null">
+        AddChannelName,
+      </if>
+      <if test="addchanneltime != null">
+        AddChannelTime,
+      </if>
+      <if test="lastupdatename != null">
+        LastUpdateName,
+      </if>
+      <if test="lastupdatetime != null">
+        LastUpdateTime,
+      </if>
+      <if test="timeliness != null">
+        TimeLiness,
+      </if>
+      <if test="delchannelname != null">
+        DelChannelName,
+      </if>
+      <if test="delchanneltime != null">
+        DelChannelTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sourceName != null">
+        #{sourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="already != null">
+        #{already,jdbcType=INTEGER},
+      </if>
+      <if test="potential != null">
+        #{potential,jdbcType=INTEGER},
+      </if>
+      <if test="addchannelname != null">
+        #{addchannelname,jdbcType=VARCHAR},
+      </if>
+      <if test="addchanneltime != null">
+        #{addchanneltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastupdatename != null">
+        #{lastupdatename,jdbcType=VARCHAR},
+      </if>
+      <if test="lastupdatetime != null">
+        #{lastupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        #{timeliness,jdbcType=INTEGER},
+      </if>
+      <if test="delchannelname != null">
+        #{delchannelname,jdbcType=VARCHAR},
+      </if>
+      <if test="delchanneltime != null">
+        #{delchanneltime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trkj.tsm.vo.SourceVo">
+    update source
+    <set>
+      <if test="sourceName != null">
+        Source_Name = #{sourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="already != null">
+        Already = #{already,jdbcType=INTEGER},
+      </if>
+      <if test="potential != null">
+        Potential = #{potential,jdbcType=INTEGER},
+      </if>
+      <if test="addchannelname != null">
+        AddChannelName = #{addchannelname,jdbcType=VARCHAR},
+      </if>
+      <if test="addchanneltime != null">
+        AddChannelTime = #{addchanneltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastupdatename != null">
+        LastUpdateName = #{lastupdatename,jdbcType=VARCHAR},
+      </if>
+      <if test="lastupdatetime != null">
+        LastUpdateTime = #{lastupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeliness != null">
+        TimeLiness = #{timeliness,jdbcType=INTEGER},
+      </if>
+      <if test="delchannelname != null">
+        DelChannelName = #{delchannelname,jdbcType=VARCHAR},
+      </if>
+      <if test="delchanneltime != null">
+        DelChannelTime = #{delchanneltime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Source_Id = #{sourceId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trkj.tsm.vo.SourceVo">
+    update source
+    set Source_Name = #{sourceName,jdbcType=VARCHAR},
+      Already = #{already,jdbcType=INTEGER},
+      Potential = #{potential,jdbcType=INTEGER},
+      AddChannelName = #{addchannelname,jdbcType=VARCHAR},
+      AddChannelTime = #{addchanneltime,jdbcType=TIMESTAMP},
+      LastUpdateName = #{lastupdatename,jdbcType=VARCHAR},
+      LastUpdateTime = #{lastupdatetime,jdbcType=TIMESTAMP},
+      TimeLiness = #{timeliness,jdbcType=INTEGER},
+      DelChannelName = #{delchannelname,jdbcType=VARCHAR},
+      DelChannelTime = #{delchanneltime,jdbcType=TIMESTAMP}
+    where Source_Id = #{sourceId,jdbcType=INTEGER}
+  </update>
+</mapper>
